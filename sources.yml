@@ -1,0 +1,38 @@
+# Sources manifest for pricing intelligence documents
+# This file tracks the sources used for building price benchmarks
+
+sources:
+  - id: deepstrike_2025_price_index
+    url: "https://example.com/reports/deepstrike-2025-price-index.pdf"
+    publisher: "DeepStrike Research"
+    date: "2025-01-15"
+    tags: ["price_index", "annual_report", "comprehensive"]
+    description: "Annual comprehensive price index for dark web data markets"
+    
+  - id: socradar_annual_2024_pdf
+    url: "https://example.com/reports/socradar-annual-2024.pdf"
+    publisher: "SOCRadar"
+    date: "2024-12-01"
+    tags: ["annual_report", "threat_intelligence", "market_analysis"]
+    description: "Annual threat intelligence report with pricing analysis"
+    
+  - id: wired_cn_telegram_lookups
+    url: "https://example.com/news/wired-cn-telegram-lookups.html"
+    publisher: "Wired"
+    date: "2024-11-20"
+    tags: ["news", "telegram", "china", "telecom"]
+    description: "Article about Chinese telecom data being sold on Telegram"
+    
+  - id: reuters_shga_10btc
+    url: "https://example.com/news/reuters-shga-10btc.html"
+    publisher: "Reuters"
+    date: "2024-10-15"
+    tags: ["news", "court_filing", "bitcoin", "data_breach"]
+    description: "Court filing reveals 10 BTC payment for stolen data"
+    
+  - id: wipfli_privacy_affairs_summary
+    url: "https://example.com/reports/wipfli-privacy-affairs-summary.md"
+    publisher: "Wipfli Privacy Affairs"
+    date: "2024-09-30"
+    tags: ["privacy_report", "data_valuation", "regulatory"]
+    description: "Summary of privacy affairs and data valuation methodologies"
