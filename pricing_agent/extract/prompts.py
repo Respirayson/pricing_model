@@ -16,6 +16,7 @@ IMPORTANT RULES:
 - Be conservative with confidence scores
 - Include relevant text snippets as evidence
 - Return structured JSON following the exact schema provided
+- Use flat structure: price_value (number), currency (string), units (string) - NOT nested objects
 
 Data types to look for:
 - contact: Contact information (email, phone, address)
@@ -37,7 +38,31 @@ Listing types:
 - account_access: Account credentials
 - document_scan: Scanned documents
 
-Return only valid JSON following the provided schema."""
+JSON FORMAT EXAMPLE:
+{
+  "price_evidence": [
+    {
+      "data_type": "credit_card",
+      "listing_type": "retail_lookup",
+      "region": "US",
+      "price_value": 17.36,
+      "currency": "USD",
+      "units": "per_record",
+      "item_desc": "Credit card information",
+      "quality_notes": "High quality",
+      "packaging": "Individual",
+      "sample_size": 1,
+      "price_low": 15.00,
+      "price_high": 20.00,
+      "snippet": "The average price of a credit card is $17.36",
+      "confidence": 0.8
+    }
+  ]
+}
+
+IMPORTANT: The 'units' field must be one of: 'per_record', 'per_account', or 'per_dataset' - no other values are allowed.
+
+Return only valid JSON following this exact schema."""
 
 EXTRACTION_USER_TEMPLATE = """Extract price evidence from the following text:
 

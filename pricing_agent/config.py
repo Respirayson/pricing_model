@@ -10,7 +10,7 @@ class Config(BaseModel):
     
     # LLM settings
     llm_api_key: Optional[str] = Field(default=None, description="API key for LLM provider")
-    llm_model: str = Field(default="gpt-4", description="LLM model to use")
+    llm_model: str = Field(default="gpt-4.1-nano", description="LLM model to use")
     llm_temperature: float = Field(default=0.1, description="LLM temperature for deterministic output")
     llm_max_tokens: int = Field(default=2000, description="Maximum tokens for LLM response")
     
@@ -28,7 +28,7 @@ class Config(BaseModel):
         """Create config from environment variables."""
         return cls(
             llm_api_key=os.getenv("LLM_API_KEY"),
-            llm_model=os.getenv("LLM_MODEL", "gpt-4"),
+            llm_model=os.getenv("LLM_MODEL", "gpt-4.1-nano"),
             llm_temperature=float(os.getenv("LLM_TEMPERATURE", "0.1")),
             llm_max_tokens=int(os.getenv("LLM_MAX_TOKENS", "2000")),
             chunk_size=int(os.getenv("CHUNK_SIZE", "3000")),

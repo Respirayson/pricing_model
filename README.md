@@ -2,10 +2,6 @@
 
 A Python package for analyzing dark web pricing documents and estimating data breach pricing based on structured evidence. This tool processes curated local documents (PDFs, HTML, Markdown) to extract pricing intelligence and build pricing models.
 
-## ⚠️ Important Notice
-
-This tool is designed for **security research and threat intelligence purposes only**. It operates exclusively on local, curated documents and does not access illicit markets or scrape dark web content. All analysis is performed on publicly available sources such as industry reports, news articles, and court filings.
-
 ## Features
 
 - **Document Processing**: Extract text from PDFs, HTML, and Markdown files
@@ -14,6 +10,15 @@ This tool is designed for **security research and threat intelligence purposes o
 - **Price Benchmarking**: Build statistical benchmarks (p10/p50/p90) by data type and region
 - **Price Estimation**: Rule-based pricing model with transparent modifiers
 - **CLI Interface**: Easy-to-use command-line tools for pipeline execution
+
+## Environment Variables
+
+The application requires the following environment variables:
+
+- `LLM_API_KEY`: Your LLM provider API key (required for LLM-based pricing)
+- `LLM_MODEL`: LLM model to use (optional, defaults to "gpt-4.1-nano")
+
+You can set these in a `.env` file (copy from `.env.example`) or as system environment variables.
 
 ## Installation
 
@@ -33,7 +38,10 @@ python -m pip install -r requirements.txt
 # 3. Install package in development mode
 python -m pip install -e .
 
-# 4. Set your OpenAI API key
+# 4. Set up environment variables
+cp .env.example .env
+# Edit .env file and add your LLM_API_KEY
+# Or set it directly:
 export LLM_API_KEY="your-openai-api-key-here"
 # On Windows:
 set LLM_API_KEY=your-openai-api-key-here
@@ -74,48 +82,184 @@ mkdir repo_docs
 
 ### 2. Run the Pipeline
 
-```bash
-# Run the full pipeline: ingest -> extract -> aggregate
-python -m pricing_agent.cli run_pipeline ./repo_docs evidence.json bench.json
+**Important**: You need to provide your LLM API key to run the pipeline.
 
-# View the benchmark
-python -m pricing_agent.cli show_benchmark bench.json
+```bash
+# Run the full pipeline with API key
+python -m pricing_agent.cli run-pipeline ./repo_docs evidence.json bench.json --api-key YOUR_API_KEY
+
+# Or set environment variable
+export LLM_API_KEY="your-api-key-here"
+python -m pricing_agent.cli run-pipeline ./repo_docs evidence.json bench.json
 ```
 
-### 3. Estimate Prices
+**Expected Output:**
+```
+Starting pricing pipeline...
+Initialized GPTInvoker with model gpt-4.1-nano
+Processing documents in ./repo_docs...
+  Processing: document1.md
+  Processing: document2.md
+  ...
+Extracted 340 price evidence entries
+Saved evidence to evidence.json
+Built benchmark with 80 rows
+Saved benchmark to bench.json
+Pipeline completed successfully!
+```
+
+### 3. View Your Benchmark Data
 
 ```bash
-# Run a demo estimation
-python -m pricing_agent.cli demo_estimate bench.json
+# Show benchmark statistics
+python -m pricing_agent.cli show-benchmark bench.json
+```
 
-# Custom estimation
-python -m pricing_agent.cli demo_estimate bench.json \
-  --data-type telecom_profile \
-  --region CN \
-  --freshness-days 20 \
+### 4. Estimate Prices
+
+The system provides multiple ways to estimate prices:
+
+#### Method 1: Rule-Based Pricing (Traditional)
+
+```bash
+# Basic rule-based estimation
+python -m pricing_agent.cli demo-estimate bench.json --data-type credit_card
+
+# Full customization
+python -m pricing_agent.cli demo-estimate bench.json \
+  --data-type credit_card \
+  --region ANY \
+  --freshness-days 10 \
   --completeness full \
   --exclusivity single_seller \
   --seller-reputation escrow_guarantee \
   --demand normal \
-  --vip-add 10
+  --vip-add 5
+```
+
+#### Method 2: LLM-Based Pricing Agent (Advanced)
+
+```bash
+# LLM-based price determination with market analysis
+python -m pricing_agent.cli llm-estimate bench.json \
+  --data-type credit_card \
+  --use-llm \
+  --api-key YOUR_API_KEY
+
+# Full LLM pricing with customization
+python -m pricing_agent.cli llm-estimate bench.json \
+  --data-type credit_card \
+  --region ANY \
+  --freshness-days 5 \
+  --completeness full \
+  --exclusivity single_seller \
+  --seller-reputation escrow_guarantee \
+  --demand high \
+  --vip-add 10 \
+  --use-llm \
+  --api-key YOUR_API_KEY
+```
+
+**LLM Pricing Agent Features:**
+- 🤖 **Intelligent Analysis**: Uses LLM to analyze market conditions and data quality
+- 📊 **Market Context**: Considers current trends, law enforcement pressure, market sentiment
+- 🎯 **Detailed Reasoning**: Provides comprehensive explanation for price determination
+- 📈 **Benchmark Comparison**: Compares to historical data and provides percentile rankings
+- 🔄 **Hybrid Approach**: Combines rule-based and LLM-based estimates for accuracy
+
+#### Method 2: Python Script
+
+Create a file called `estimate_example.py`:
+
+```python
+from pricing_agent.estimate.estimator import PriceEstimator
+from pricing_agent.schemas import ItemSpec, DataType, ListingType
+from pricing_agent.utils.io import load_benchmark
+
+# Load your benchmark
+benchmark = load_benchmark('bench.json')
+estimator = PriceEstimator(benchmark)
+
+# Create specification for high-quality credit card
+spec = ItemSpec(
+    data_type=DataType.CREDIT_CARD,
+    region='ANY',
+    listing_type=ListingType.RETAIL_LOOKUP,
+    features={
+        'freshness_days': 5,      # Very fresh
+        'completeness': 'full',   # Complete data
+        'exclusivity': 'single_seller',  # Rare
+        'seller_reputation': 'escrow_guarantee',  # Trusted
+        'demand': 'high',         # High demand
+        'vip_add': 10.0          # VIP premium
+    }
+)
+
+# Estimate price
+result = estimator.estimate(spec)
+
+print(f"Base Price: ${result.base_sum:.2f}")
+print(f"Final Price: ${result.est_price:.2f}")
+print(f"Confidence: {result.confidence:.2f}")
+print(f"Modifiers Applied: {result.modifiers_applied}")
+```
+
+Run the script:
+```bash
+python estimate_example.py
+```
+
+#### Method 3: Interactive Python
+
+```python
+# Start Python and run interactively
+python
+
+# In Python:
+from pricing_agent.estimate.estimator import PriceEstimator
+from pricing_agent.schemas import ItemSpec, DataType, ListingType
+from pricing_agent.utils.io import load_benchmark
+
+# Load benchmark
+benchmark = load_benchmark('bench.json')
+estimator = PriceEstimator(benchmark)
+
+# Quick credit card estimate
+spec = ItemSpec(
+    data_type=DataType.CREDIT_CARD,
+    region='ANY',
+    listing_type=ListingType.RETAIL_LOOKUP,
+    features={'freshness_days': 30, 'completeness': 'standard', 'exclusivity': 'limited', 'seller_reputation': 'verified', 'demand': 'normal', 'vip_add': 0.0}
+)
+
+result = estimator.estimate(spec)
+print(f"Credit Card Price: ${result.est_price:.2f}")
 ```
 
 ## Data Types
 
-The system recognizes the following data types:
+The system recognizes the following data types (based on your extracted benchmark):
 
-- `contact`: Contact information (email, phone, address)
-- `pii_core`: Core personally identifiable information (name, SSN, DOB)
-- `fullz`: Complete identity packages
-- `credit_card`: Credit card information
-- `bank_login`: Bank account credentials
-- `gov_id_scan`: Government ID documents
-- `medical_record`: Medical records
-- `consumer_account`: Consumer account credentials
-- `corporate_access`: Corporate system access
-- `telecom_subscription`: Telecom service subscriptions
-- `telecom_profile`: Telecom customer profiles
-- `other`: Other types of data
+### Primary Data Types
+- **`credit_card`**: Credit card information ($1-$310, median ~$22-65)
+- **`fullz`**: Complete identity packages ($8-$6,500, median ~$14-25)
+- **`bank_login`**: Bank account credentials ($10-$2,200, median ~$50-500)
+- **`gov_id_scan`**: Government ID documents ($150-$50M, median ~$100-200)
+- **`medical_record`**: Medical records ($180-$400, median ~$180-400)
+
+### Secondary Data Types
+- **`consumer_account`**: Consumer account credentials ($14-$120, median ~$14-20)
+- **`corporate_access`**: Corporate system access ($1,000)
+- **`pii_core`**: Core personally identifiable information ($200)
+- **`contact`**: Contact information ($50)
+- **`other`**: Other types of data ($60-$1,700, median ~$60-425)
+
+### Price Ranges (from your benchmark)
+- **Credit Cards**: $1-$310 (most common: $17.36-$65)
+- **Fullz**: $8-$6,500 (most common: $14-$25)
+- **Bank Logins**: $10-$2,200 (most common: $50-$500)
+- **Government IDs**: $150-$50,000,000 (most common: $100-$200)
+- **Medical Records**: $180-$400
 
 ## Listing Types
 
@@ -160,7 +304,9 @@ The pricing model applies the following modifiers:
 - High: 1.1
 - Spike: 1.3
 
-## Price Formula
+## Pricing Models
+
+### Rule-Based Pricing Model
 
 ```
 Final Price = [Σ Base Components] × Freshness × Completeness × Exclusivity × Packaging × Reputation × Demand + VIP_add
@@ -171,65 +317,35 @@ Where:
 - All modifiers are multiplicative except VIP_add (additive)
 - Final price is guaranteed to be non-negative
 
+### LLM-Based Pricing Agent
+
+The LLM pricing agent provides a comprehensive approach that:
+
+1. **Analyzes Market Context**: Considers current trends, law enforcement pressure, market sentiment
+2. **Evaluates Data Quality**: Assesses completeness, freshness, exclusivity, and seller reputation
+3. **Compares to Benchmarks**: Uses historical data to provide percentile rankings
+4. **Provides Reasoning**: Explains the price determination with detailed analysis
+5. **Offers Confidence Scoring**: Indicates reliability of the price estimate
+
+**LLM Agent Output Includes:**
+- Determined price with confidence range
+- Detailed reasoning and key factors
+- Market conditions assessment
+- Quality evaluation
+- Comparison to historical benchmarks
+- Hybrid pricing (combines rule-based + LLM estimates)
+
 ## Configuration
 
-Set environment variables for configuration:
+### Required Setup
 
+1. **Install Dependencies**:
 ```bash
-export LLM_API_KEY="your-api-key"
-export LLM_MODEL="gpt-4"
-export CHUNK_SIZE=3000
-export CHUNK_OVERLAP=200
-export MIN_CONFIDENCE=0.5
+pip install colorlog openai pydantic click requests beautifulsoup4
 ```
 
-## Testing
-
-Run the test suite:
-
+2. **Set API Key** (Required for pipeline):
 ```bash
-pytest tests/
+export LLM_API_KEY="your-api-key-here"
+# Or pass directly: --api-key YOUR_API_KEY
 ```
-
-## Architecture
-
-```
-pricing_agent/
-├── ingest/          # Document loading and text extraction
-├── extract/         # Price detection and LLM extraction
-├── normalize/       # Currency conversion and field mapping
-├── aggregate/       # Benchmark building and modifiers
-├── estimate/        # Price estimation models
-├── eval/           # Evaluation metrics and harness
-├── utils/          # Utility functions
-└── cli.py          # Command-line interface
-```
-
-## Data Contracts
-
-The system uses Pydantic v2 models for data validation:
-
-- `PriceEvidence`: Individual price observations
-- `PriceBenchRow`: Aggregated benchmark statistics
-- `ItemSpec`: Specification for price estimation
-- `EstimationResult`: Result of price estimation
-
-## LLM Integration
-
-The system includes a provider-agnostic LLM client with function calling support. Currently implemented as a stub - you'll need to provide your API key and implement the actual LLM calls.
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Add tests for new functionality
-4. Ensure all tests pass
-5. Submit a pull request
-
-## License
-
-This project is for educational and research purposes. Please ensure compliance with all applicable laws and regulations when using this tool.
-
-## Disclaimer
-
-This tool is provided for security research and threat intelligence purposes only. Users are responsible for ensuring compliance with all applicable laws and regulations. The authors do not endorse or encourage any illegal activities.

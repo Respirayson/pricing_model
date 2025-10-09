@@ -10,7 +10,7 @@ from .prompts import EXTRACTION_SYSTEM, EXTRACTION_USER_TEMPLATE
 class LLMClient:
     """Provider-agnostic LLM client for structured extraction."""
     
-    def __init__(self, api_key: Optional[str] = None, model: str = "gpt-4"):
+    def __init__(self, api_key: Optional[str] = None, model: str = "gpt-4.1-nano"):
         """
         Initialize LLM client.
         
@@ -25,13 +25,23 @@ class LLMClient:
         # Initialize GPTInvoker if API key is available
         if self.api_key:
             try:
-                # Import your GPTInvoker
+                # Import your GPTInvoker - try multiple paths
+                current_dir = os.path.dirname(os.path.abspath(__file__))
+                project_root = os.path.dirname(os.path.dirname(os.path.dirname(current_dir)))
+                sys.path.insert(0, project_root)
+                
+                # Also try the current working directory
+                cwd = os.getcwd()
+                if cwd not in sys.path:
+                    sys.path.insert(0, cwd)
+                
                 from gpt_invoker import GPTInvoker
                 self._invoker = GPTInvoker(
-                    api_key=self.api_key,
                     model=self.model,
+                    api_key=self.api_key,
+                    api_host="https://yunwu.ai/v1",
                     temperature=0.1,
-                    max_tokens=2000
+                    max_tokens=12000
                 )
                 print(f"Initialized GPTInvoker with model {model}")
             except ImportError:
@@ -53,38 +63,44 @@ class LLMClient:
         Returns:
             Extracted data as dictionary
         """
-        if not self._invoker:
-            # Fallback to stub if no invoker available
-            return {
-                "price_evidence": [],
-                "confidence": 0.0,
-                "extraction_notes": "LLM extraction not available - no API key or GPTInvoker not found"
-            }
         
         try:
-            # Create messages for GPTInvoker
             messages = [
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt}
             ]
             
-            # Call GPTInvoker
             response = self._invoker.generate(messages)
-            
-            # Try to extract JSON from response
             try:
                 result = self._invoker.extract_json(response)
                 return result
             except:
                 # If JSON extraction fails, try to parse manually
                 try:
-                    # Look for JSON in the response
+                    # Look for JSON in the response with more flexible patterns
                     import re
-                    json_match = re.search(r'\{.*\}', response, re.DOTALL)
+                    
+                    # Try to find JSON block with ```json markers first
+                    json_block_match = re.search(r'```json\s*(\{.*?\})\s*```', response, re.DOTALL)
+                    if json_block_match:
+                        result = json.loads(json_block_match.group(1))
+                        return result
+                    
+                    # Try to find any JSON object in the response
+                    json_match = re.search(r'\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}', response, re.DOTALL)
                     if json_match:
                         result = json.loads(json_match.group())
                         return result
-                except:
+                    
+                    # Try to find JSON starting from the first { and ending at the last }
+                    start_idx = response.find('{')
+                    end_idx = response.rfind('}')
+                    if start_idx != -1 and end_idx != -1 and end_idx > start_idx:
+                        json_str = response[start_idx:end_idx+1]
+                        result = json.loads(json_str)
+                        return result
+                        
+                except Exception:
                     pass
                 
                 # Return empty result if parsing fails
@@ -94,6 +110,21 @@ class LLMClient:
                     "extraction_notes": f"Failed to parse LLM response: {response[:200]}..."
                 }
                 
+        except ValueError as e:
+            if "Finish reason is not 'stop'" in str(e):
+                print(f"Warning: LLM response truncated due to token limit. Consider increasing max_tokens.")
+                return {
+                    "price_evidence": [],
+                    "confidence": 0.0,
+                    "extraction_notes": f"LLM response truncated: {str(e)}"
+                }
+            else:
+                print(f"Error calling LLM: {e}")
+                return {
+                    "price_evidence": [],
+                    "confidence": 0.0,
+                    "extraction_notes": f"LLM call failed: {str(e)}"
+                }
         except Exception as e:
             print(f"Error calling LLM: {e}")
             return {

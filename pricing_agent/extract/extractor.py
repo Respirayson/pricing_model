@@ -62,25 +62,45 @@ class EvidenceExtractor:
         """
         try:
             # Validate and convert data type
-            data_type_str = item.get('data_type', '').lower()
+            data_type_str = (item.get('data_type') or '').lower()
             data_type = self._parse_data_type(data_type_str)
             if not data_type:
                 return None
             
             # Validate and convert listing type
-            listing_type_str = item.get('listing_type', '').lower()
+            listing_type_str = (item.get('listing_type') or '').lower()
             listing_type = self._parse_listing_type(listing_type_str)
             if not listing_type:
                 return None
             
             # Validate and convert currency
-            currency_str = item.get('currency', 'USD').upper()
+            currency_str = (item.get('currency') or 'USD').upper()
             currency = self._parse_currency(currency_str)
             
             # Validate price value
-            price_value = float(item.get('price_value', 0))
-            if price_value <= 0:
+            price_value_raw = item.get('price_value')
+            if price_value_raw is None:
                 return None
+            
+            try:
+                price_value = float(price_value_raw)
+                if price_value <= 0:
+                    return None
+            except (ValueError, TypeError):
+                return None
+            
+            # Validate and fix units
+            units = item.get('units', 'per_record')
+            if units not in ['per_record', 'per_account', 'per_dataset']:
+                # Map common invalid units to valid ones
+                if 'card' in units.lower() or 'credit' in units.lower():
+                    units = 'per_record'
+                elif 'account' in units.lower():
+                    units = 'per_account'
+                elif 'bulk' in units.lower() or 'dump' in units.lower():
+                    units = 'per_dataset'
+                else:
+                    units = 'per_record'  # Default fallback
             
             # Create snippet from chunk (simplified)
             snippet = self._extract_snippet(chunk, item.get('snippet', ''))
@@ -96,14 +116,14 @@ class EvidenceExtractor:
                 item_desc=item.get('item_desc'),
                 price_value=price_value,
                 currency=currency,
-                units=item.get('units', 'per_record'),
+                units=units,
                 quality_notes=item.get('quality_notes'),
                 packaging=item.get('packaging'),
-                sample_size=item.get('sample_size'),
-                price_low=item.get('price_low'),
-                price_high=item.get('price_high'),
+                sample_size=self._safe_int(item.get('sample_size')),
+                price_low=self._safe_float(item.get('price_low')),
+                price_high=self._safe_float(item.get('price_high')),
                 snippet=snippet,
-                extractor_confidence=float(item.get('confidence', 0.7))
+                extractor_confidence=self._safe_float(item.get('confidence'), 0.7)
             )
             
         except Exception as e:
@@ -155,3 +175,21 @@ class EvidenceExtractor:
         
         # Fallback: return first 200 characters of chunk
         return chunk[:200] + "..." if len(chunk) > 200 else chunk
+    
+    def _safe_float(self, value, default=None):
+        """Safely convert value to float."""
+        if value is None:
+            return default
+        try:
+            return float(value)
+        except (ValueError, TypeError):
+            return default
+    
+    def _safe_int(self, value, default=None):
+        """Safely convert value to int."""
+        if value is None:
+            return default
+        try:
+            return int(value)
+        except (ValueError, TypeError):
+            return default
