@@ -70,37 +70,72 @@ class LLMPricingAgent:
                             market_context: Optional[Dict[str, Any]]) -> str:
         """Build comprehensive pricing prompt."""
         
-        prompt = f"""Determine the exact market price for the following data item:
+        # Extract key features for emphasis
+        freshness_days = item_spec.features.get('freshness_days', 'unknown')
+        completeness = item_spec.features.get('completeness', 'standard')
+        exclusivity = item_spec.features.get('exclusivity', 'limited')
+        seller_reputation = item_spec.features.get('seller_reputation', 'verified')
+        demand = item_spec.features.get('demand', 'normal')
+        vip_add = item_spec.features.get('vip_add', 0)
+        
+        prompt = f"""Determine the exact market price for the following data item based on historical data patterns and market dynamics.
 
 ITEM SPECIFICATION:
 - Data Type: {item_spec.data_type.value}
 - Listing Type: {item_spec.listing_type.value}
 - Region: {item_spec.region}
-- Features: {json.dumps(item_spec.features, indent=2)}
 
-RELEVANT HISTORICAL DATA:
+KEY ITEM CHARACTERISTICS:
+- Freshness: {freshness_days} days old
+- Completeness: {completeness}
+- Exclusivity: {exclusivity}
+- Seller Reputation: {seller_reputation}
+- Market Demand: {demand}
+- VIP Add-on: ${vip_add}
+
+HISTORICAL BENCHMARK DATA:
 {json.dumps(benchmarks, indent=2)}
 
 MARKET CONTEXT:
 {json.dumps(market_context or {}, indent=2)}
 
-Please analyze the item specification, consider the historical pricing data, and determine the most accurate market price. Consider factors like:
-- Data quality and completeness
-- Market demand and supply
-- Seller reputation and trust
-- Data freshness and exclusivity
-- Regional variations
-- Current market trends
+ANALYSIS APPROACH:
+1. Examine the historical benchmarks to understand typical pricing for this data type
+2. Identify how the item's characteristics (freshness, completeness, exclusivity, etc.) differ from typical market conditions
+3. Infer from market patterns how these characteristics should affect pricing
+4. Consider supply/demand dynamics and current market conditions
+5. Determine a price that reflects the item's specific characteristics relative to historical patterns
 
-RESPOND WITH ONLY A JSON OBJECT containing your price determination. The JSON must include:
-- determined_price: the exact price as a number
-- confidence: confidence level (0.0 to 1.0)
-- reasoning: detailed explanation as a string
-- key_factors: array of key factors that influenced pricing
-- price_range: object with min_price and max_price
+YOUR TASK - ANALYZE AND PREDICT PRICING:
+
+You are a dark web pricing expert. Analyze the historical benchmark data and the item characteristics to predict the market price.
+
+ANALYSIS APPROACH:
+1. Study the historical benchmarks to understand pricing patterns for this data type
+2. Consider how item characteristics affect value:
+   - **Freshness**: Recent data is more valuable (days_old: {freshness_days})
+   - **Quality**: Completeness and exclusivity increase value ({completeness}, {exclusivity})
+   - **Trust**: Seller reputation affects willingness to pay ({seller_reputation})
+   - **Market dynamics**: Current demand levels matter ({demand})
+3. Analyze current market context for sentiment (stable, volatile, etc.)
+4. Synthesize all factors to determine your predicted price
+
+Your price should:
+- Be grounded in the benchmark data patterns
+- Reflect the specific item characteristics  
+- Account for market sentiment and conditions
+- Include detailed reasoning explaining your analysis
+
+RESPOND WITH ONLY A JSON OBJECT containing your price prediction:
+- determined_price: your predicted market price (number)
+- confidence: your confidence in this prediction (0.0 to 1.0)
+- reasoning: detailed explanation of your analysis and how you arrived at this price
+- key_factors: array of key factors that influenced your pricing decision
+- market_sentiment: string describing current market sentiment (bearish/neutral/bullish)
+- price_range: object with min_price and max_price representing your confidence interval
 - market_conditions: object with demand_level, supply_level, market_trend
 - quality_assessment: object with data_quality, completeness, freshness, exclusivity
-- comparison_to_benchmarks: object with vs_median, vs_p10, vs_p90, percentile_rank
+- comparison_to_benchmarks: how this price compares to historical benchmarks
 
 Do not include any text outside the JSON object."""
         
@@ -134,7 +169,26 @@ Provide accurate, well-reasoned price determinations that reflect real market co
             "properties": {
                 "determined_price": {
                     "type": "number",
-                    "description": "The exact market price determined for the item"
+                    "description": "The predicted market price for this data item"
+                },
+                "confidence": {
+                    "type": "number",
+                    "minimum": 0.0,
+                    "maximum": 1.0,
+                    "description": "Confidence in the price prediction (0-1)"
+                },
+                "reasoning": {
+                    "type": "string",
+                    "description": "Detailed reasoning explaining the price analysis"
+                },
+                "key_factors": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "description": "Key factors that influenced the pricing decision"
+                },
+                "market_sentiment": {
+                    "type": "string",
+                    "description": "Market sentiment classification (bearish/neutral/bullish)"
                 },
                 "price_range": {
                     "type": "object",
@@ -142,22 +196,7 @@ Provide accurate, well-reasoned price determinations that reflect real market co
                         "min_price": {"type": "number"},
                         "max_price": {"type": "number"}
                     },
-                    "description": "Confidence range for the price"
-                },
-                "confidence": {
-                    "type": "number",
-                    "minimum": 0.0,
-                    "maximum": 1.0,
-                    "description": "Confidence in the price determination (0-1)"
-                },
-                "reasoning": {
-                    "type": "string",
-                    "description": "Detailed reasoning for the price determination"
-                },
-                "key_factors": {
-                    "type": "array",
-                    "items": {"type": "string"},
-                    "description": "Key factors that influenced the pricing decision"
+                    "description": "Confidence interval for the price"
                 },
                 "market_conditions": {
                     "type": "object",
@@ -179,13 +218,6 @@ Provide accurate, well-reasoned price determinations that reflect real market co
                     "description": "Assessment of data quality factors"
                 },
                 "comparison_to_benchmarks": {
-                    "type": "object",
-                    "properties": {
-                        "vs_median": {"type": "number"},
-                        "vs_p10": {"type": "number"},
-                        "vs_p90": {"type": "number"},
-                        "percentile_rank": {"type": "number"}
-                    },
                     "description": "Comparison to historical benchmark data"
                 }
             },
@@ -238,6 +270,7 @@ class HybridPricingAgent:
             llm_confidence = llm_result.get("confidence", 0.0)
             
             result.update({
+                "market_sentiment": llm_result.get("market_sentiment"),
                 "llm_determined_price": llm_price,
                 "llm_confidence": llm_confidence,
                 "llm_reasoning": llm_result.get("reasoning"),

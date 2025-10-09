@@ -32,16 +32,18 @@ def setup_environment():
     else:
         print("⚠️  Not in a virtual environment - consider using one")
     
+    python_cmd = sys.executable
+    
     # Install/upgrade pip
-    if not run_command("python -m pip install --upgrade pip", "Upgrading pip"):
+    if not run_command(f"{python_cmd} -m pip install --upgrade pip", "Upgrading pip"):
         return False
     
     # Install requirements
-    if not run_command("python -m pip install -r requirements.txt", "Installing requirements"):
+    if not run_command(f"{python_cmd} -m pip install -r requirements.txt", "Installing requirements"):
         return False
     
     # Install the package in development mode
-    if not run_command("python -m pip install -e .", "Installing pricing-agent package"):
+    if not run_command(f"{python_cmd} -m pip install -e .", "Installing pricing-agent package"):
         return False
     
     # Test imports

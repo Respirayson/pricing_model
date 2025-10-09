@@ -241,23 +241,30 @@ def llm_estimate(ctx, benchmark_file, data_type, region, freshness_days,
         # Get hybrid estimate
         result = hybrid_agent.estimate_price(spec, market_context=market_context)
         
-        # Output comprehensive result
+        # Output comprehensive result with clear final price
+        final_price = result.get("llm_determined_price", result.get("hybrid_price", 0))
+        
         output = {
-            "pricing_method": result.get("pricing_method", "hybrid"),
-            "rule_based_price": result.get("rule_based_price"),
-            "llm_determined_price": result.get("llm_determined_price"),
-            "hybrid_price": result.get("hybrid_price"),
-            "llm_confidence": result.get("llm_confidence"),
-            "llm_reasoning": result.get("llm_reasoning"),
-            "llm_key_factors": result.get("llm_key_factors", []),
-            "price_range": result.get("price_range"),
-            "market_conditions": result.get("market_conditions"),
-            "quality_assessment": result.get("quality_assessment"),
-            "comparison_to_benchmarks": result.get("comparison_to_benchmarks"),
-            "spec": {
+            "FINAL_PRICE": final_price,
+            "currency": "USD",
+            "confidence": result.get("llm_confidence", result.get("rule_based_confidence", 0.0)),
+            "analysis": {
+                "reasoning": result.get("llm_reasoning"),
+                "key_factors": result.get("llm_key_factors", []),
+                "market_sentiment": result.get("market_sentiment")
+            },
+            "market_intelligence": {
+                "market_conditions": result.get("market_conditions"),
+                "quality_assessment": result.get("quality_assessment"),
+                "price_range": result.get("price_range")
+            },
+            "benchmark_comparison": result.get("comparison_to_benchmarks"),
+            "item_specification": {
                 "data_type": spec.data_type.value,
                 "region": spec.region,
-                "features": spec.features
+                "freshness_days": spec.features.get("freshness_days"),
+                "completeness": spec.features.get("completeness"),
+                "exclusivity": spec.features.get("exclusivity")
             }
         }
     else:

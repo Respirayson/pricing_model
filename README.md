@@ -335,6 +335,192 @@ The LLM pricing agent provides a comprehensive approach that:
 - Comparison to historical benchmarks
 - Hybrid pricing (combines rule-based + LLM estimates)
 
+## Example Workflow Commands
+
+Here's a complete end-to-end workflow showing how to use the pricing agent:
+
+### 1. Web Scraping Dark Web Pricing Data
+
+```bash
+# Scrape dark web pricing information from configured sources
+python -m pricing_agent.cli scrape-web --output-dir ./repo_docs --delay 2.0
+```
+
+**Expected Output:**
+```
+Starting web scraping...
+Successfully scraped 5 sources:
+  - ./repo_docs/dark_web_prices_2023.html
+  - ./repo_docs/breach_data_costs.html
+  ...
+```
+
+### 2. Run the Complete Pipeline
+
+```bash
+# Process all documents, extract pricing evidence, and build benchmark
+python -m pricing_agent.cli run-pipeline ./repo_docs evidence.json bench.json
+```
+
+**Expected Output:**
+```
+Starting pricing pipeline...
+Initialized GPTInvoker with model gpt-4.1-nano
+Processing documents in ./repo_docs...
+  Processing: comparitech_dark_web_prices.md
+  Processing: privacy_affairs_2023.md
+  ...
+Extracted 340 price evidence entries
+Saved evidence to evidence.json
+Built benchmark with 80 rows
+Saved benchmark to bench.json
+Pipeline completed successfully!
+```
+
+### 3. View Benchmark Statistics
+
+```bash
+# Display the extracted pricing benchmarks
+python -m pricing_agent.cli show-benchmark bench.json
+```
+
+**Expected Output:**
+```
+Benchmark contains 80 rows:
+
+  credit_card | retail_lookup | ANY
+    n=45, p10=$17.36, p50=$65.00, p90=$310.00
+    Last seen: 2023-12-15
+
+  fullz | retail_lookup | ANY
+    n=38, p10=$14.00, p50=$25.00, p90=$6500.00
+    Last seen: 2023-12-15
+  ...
+```
+
+### 4a. Rule-Based Price Estimation
+
+```bash
+# Basic price estimation using rule-based model
+python -m pricing_agent.cli demo-estimate bench.json \
+  --data-type credit_card \
+  --region ANY \
+  --freshness-days 10 \
+  --completeness full \
+  --exclusivity single_seller \
+  --seller-reputation escrow_guarantee \
+  --demand normal \
+  --vip-add 5
+```
+
+**Expected Output:**
+```json
+{
+  "base_sum": 65.00,
+  "est_price": 142.35,
+  "modifiers_applied": {
+    "freshness": 1.0,
+    "completeness": 1.2,
+    "exclusivity": 1.5,
+    "packaging": 1.5,
+    "reputation": 1.2,
+    "demand": 1.0
+  },
+  "components_used": ["credit_card"],
+  "confidence": 0.85,
+  "spec": {
+    "data_type": "credit_card",
+    "region": "ANY",
+    "features": {
+      "freshness_days": 10,
+      "completeness": "full",
+      "exclusivity": "single_seller",
+      "seller_reputation": "escrow_guarantee",
+      "demand": "normal",
+      "vip_add": 5
+    }
+  }
+}
+```
+
+### 4b. LLM-Based Price Estimation (Advanced)
+
+```bash
+# Use LLM-powered pricing agent with market analysis
+python -m pricing_agent.cli llm-estimate bench.json \
+  --data-type credit_card \
+  --region ANY \
+  --freshness-days 5 \
+  --completeness full \
+  --exclusivity single_seller \
+  --seller-reputation escrow_guarantee \
+  --demand high \
+  --vip-add 10 \
+  --use-llm \
+  --api-key YOUR_API_KEY
+```
+
+**Expected Output:**
+```json
+{
+  "pricing_method": "hybrid",
+  "rule_based_price": 147.50,
+  "llm_determined_price": 155.00,
+  "hybrid_price": 151.25,
+  "llm_confidence": 0.82,
+  "llm_reasoning": "High-quality fresh credit card data with full information from trusted seller. Market shows strong demand. Premium justified by exclusivity and freshness.",
+  "llm_key_factors": [
+    "Data freshness (5 days) - very recent",
+    "Full completeness with all card details",
+    "Single seller exclusivity increases value",
+    "Trusted seller with escrow guarantee",
+    "High current demand in market"
+  ],
+  "price_range": {
+    "low": 135.00,
+    "high": 170.00
+  },
+  "market_conditions": {
+    "current_trend": "stable",
+    "law_enforcement": "moderate_pressure",
+    "market_sentiment": "neutral"
+  },
+  "quality_assessment": {
+    "data_quality_score": 0.9,
+    "seller_trust_score": 0.85,
+    "market_positioning": "premium"
+  },
+  "comparison_to_benchmarks": {
+    "percentile": "75th",
+    "above_median": true,
+    "reasoning": "Price is above median due to premium quality factors"
+  }
+}
+```
+
+### Complete Workflow Example
+
+```bash
+# Complete end-to-end workflow in sequence:
+
+# Step 1: Set API key
+export LLM_API_KEY="your-openai-api-key-here"
+
+# Step 2: Scrape web data (if you need fresh data)
+python -m pricing_agent.cli scrape-web --output-dir ./repo_docs
+
+# Step 3: Run the pipeline to build benchmarks
+python -m pricing_agent.cli run-pipeline ./repo_docs evidence.json bench.json
+
+# Step 4: View the benchmarks
+python -m pricing_agent.cli show-benchmark bench.json
+
+# Step 5: Estimate prices with LLM
+python -m pricing_agent.cli llm-estimate bench.json \
+  --data-type credit_card \
+  --use-llm
+```
+
 ## Configuration
 
 ### Required Setup
