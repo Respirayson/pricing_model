@@ -88,7 +88,7 @@ def setup_environment():
     print("1. Set your API key: export LLM_API_KEY='your-key'")
     print("2. Scrape more data: python -m pricing_agent.cli scrape-web")
     print("3. Run pipeline: python -m pricing_agent.cli run-pipeline ./repo_docs evidence.json bench.json")
-    print("4. Estimate prices: python -m pricing_agent.cli demo-estimate bench.json")
+    print("4. Estimate prices: python -m pricing_agent.cli rule-estimate bench.json")
     
     return True
 

@@ -48,7 +48,7 @@ def get_real_pricing_sources() -> List[Dict[str, Any]]:
         },
         {
             'id': 'socradar_dark_web_report_2024',
-            'url': 'https://socradar.io/labs/dark-web-report/',
+            'url': 'https://socradar.io/resources/report/socradar-2024-annual-dark-web-report/',
             'title': 'SOCRadar Dark Web Report 2024',
             'date': '2024-12-01',
             'description': 'SOCRadar comprehensive dark web threat intelligence report'
@@ -62,21 +62,21 @@ def get_real_pricing_sources() -> List[Dict[str, Any]]:
         },
         {
             'id': 'prey_project_dark_web_stats',
-            'url': 'https://preyproject.com/blog/dark-web-statistics-trends-2025',
+            'url': 'https://preyproject.com/blog/dark-web-statistics-trends',
             'title': 'Dark Web Statistics & Trends 2025',
             'date': '2025-01-01',
             'description': 'Prey Project analysis of dark web trends and pricing'
         },
         {
-            'id': 'enfortra_dark_web_price_index',
-            'url': 'https://enfortra.com/dark-web-price-index/',
-            'title': 'Dark Web Price Index - Enfortra',
+            'id': 'deepstrike_dark_web_data_pricing_2025',
+            'url': 'https://deepstrike.io/blog/dark-web-data-pricing-2025',
+            'title': 'Dark Web Price Index - DeepStrike',
             'date': '2024-01-01',
-            'description': 'Enfortra dark web pricing index and analysis'
+            'description': 'DeepStrike dark web pricing index and analysis'
         },
         {
             'id': 'moneyzine_dark_web_stats',
-            'url': 'https://moneyzine.com/dark-web-statistics/',
+            'url': 'https://moneyzine.com/resources/dark-web-statistics/',
             'title': 'Essential Dark Web Statistics for 2025',
             'date': '2025-01-01',
             'description': 'MoneyZine comprehensive dark web statistics'
@@ -94,70 +94,70 @@ def get_news_sources() -> List[Dict[str, Any]]:
     return [
         {
             'id': 'wired_china_surveillance',
-            'url': 'https://www.wired.com/story/china-surveillance-state-selling-citizen-data/',
+            'url': 'https://www.wired.com/story/chineses-surveillance-state-is-selling-citizens-data-as-a-side-hustle/',
             'title': "China's Surveillance State Is Selling Citizen Data as a Side Hustle",
             'date': '2024-11-21',
             'description': 'WIRED article about Chinese surveillance data being sold on black markets'
         },
         {
             'id': 'reuters_china_data_breach',
-            'url': 'https://www.reuters.com/world/china/hacker-claims-have-stolen-1-bln-records-chinese-citizens-2022-07-04/',
+            'url': 'https://www.reuters.com/world/china/hacker-claims-have-stolen-1-bln-records-chinese-citizens-police-2022-07-04/',
             'title': 'Hacker claims to have stolen 1 bln records of Chinese citizens',
             'date': '2022-07-04',
             'description': 'Reuters report on massive Chinese data breach'
         },
         {
             'id': 'guardian_china_data_breach',
-            'url': 'https://www.theguardian.com/world/2022/jul/04/hacker-claims-to-have-obtained-data-on-1-billion-chinese-citizens',
+            'url': 'https://www.theguardian.com/technology/2022/jul/04/hacker-claims-access-data-billion-chinese-citizens',
             'title': 'Hacker claims to have obtained data on 1 billion Chinese citizens',
             'date': '2022-07-04',
             'description': 'Guardian report on Chinese data breach'
         },
         {
             'id': 'wired_telegram_purged',
-            'url': 'https://www.wired.com/story/telegram-purged-chinese-crypto-scam-markets/',
+            'url': 'https://www.wired.com/story/telegram-purged-chinese-crypto-scam-markets-then-let-them-rebuild/',
             'title': 'Telegram Purged Chinese Crypto Scam Markets—Then They Regrouped',
             'date': '2025-06-23',
             'description': 'WIRED report on Telegram banning crypto scam markets'
         },
         {
             'id': 'wired_xinbi_guarantee',
-            'url': 'https://www.wired.com/story/xinbi-guarantee-chinese-crypto-crime-hub/',
+            'url': 'https://www.wired.com/story/xinbi-guarantee-crypto-scam-hub/',
             'title': 'An $8.4 Billion Chinese Hub for Crypto Crime Is Hiding in Plain Sight',
             'date': '2025-05-13',
             'description': 'WIRED investigation into Chinese crypto crime marketplace'
         },
         {
             'id': 'wired_chinese_hackers',
-            'url': 'https://www.wired.com/story/chinese-patriotic-honkers-nation-elite-cyberwarriors/',
+            'url': 'https://www.wired.com/story/china-honkers-elite-cyber-spies/',
             'title': "How China's Patriotic 'Honkers' Became the Nation's Elite Cyberwarriors",
             'date': '2025-07-18',
             'description': 'WIRED analysis of Chinese hacker groups and their activities'
         },
         {
             'id': 'wired_us_charges_spies',
-            'url': 'https://www.wired.com/story/us-charges-12-alleged-spies-china-freewheeling-cyberattacks/',
+            'url': 'https://www.wired.com/story/us-charges-12-alleged-spies-in-chinas-freewheeling-hacker-for-hire-ecosystem/',
             'title': "US Charges 12 Alleged Spies in China's Freewheeling Cyberattack Campaign",
             'date': '2025-03-05',
             'description': 'WIRED report on US charges against Chinese cyber spies'
         },
         {
             'id': 'wired_biggest_black_market',
-            'url': 'https://www.wired.com/story/internets-biggest-black-market-shut-down/',
+            'url': 'https://www.wired.com/story/the-internets-biggest-ever-black-market-shuts-down-after-a-telegram-purge/',
             'title': "The Internet's Biggest-Ever Black Market Just Shut Down",
             'date': '2025-05-14',
             'description': 'WIRED report on major dark web marketplace shutdown'
         },
         {
             'id': 'bloomberg_shanghai_police',
-            'url': 'https://www.bloomberg.com/news/articles/2022-07-03/hackers-claim-theft-of-police-info-in-china-s-largest-data-breach',
+            'url': 'https://www.bloomberg.com/news/articles/2022-07-04/hackers-claim-theft-of-police-info-in-china-s-largest-data-leak',
             'title': "Hackers Claim Theft of Police Info in China's Largest Data Breach",
-            'date': '2022-07-03',
+            'date': '2022-07-04',
             'description': 'Bloomberg report on Shanghai police data breach'
         },
         {
             'id': 'abc_net_au_china_data',
-            'url': 'https://www.abc.net.au/news/2022-07-05/china-hacker-offers-personal-data-billion-citizens/101208890',
+            'url': 'https://www.abc.net.au/news/2022-07-06/hacker-claims-to-have-stolen-1-billion-records-of-chinese-citize/101213964',
             'title': "'ChinaDan' hacker offers personal data on 1 billion Chinese citizens for sale",
             'date': '2022-07-05',
             'description': 'ABC Australia report on Chinese data breach'

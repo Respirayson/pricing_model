@@ -14,6 +14,176 @@
     ]
   },
   {
+    "data_type": "fullz",
+    "listing_type": "retail_lookup",
+    "region": "US",
+    "n": 5,
+    "p10": 10.8,
+    "p50": 20.0,
+    "p90": 278.00000000000006,
+    "last_seen": null,
+    "sources": [
+      "comparitech_dark_web_prices_md",
+      "deepstrike_dark_web_data_pricing_2025_md",
+      "privacy_affairs_2023_md"
+    ]
+  },
+  {
+    "data_type": "credit_card",
+    "listing_type": "retail_lookup",
+    "region": "US",
+    "n": 22,
+    "p10": 10.0,
+    "p50": 20.0,
+    "p90": 110.0,
+    "last_seen": null,
+    "sources": [
+      "privacy_affairs_2022_md",
+      "deepstrike_dark_web_data_pricing_2025_md",
+      "comparitech_dark_web_prices_md",
+      "privacy_affairs_2023_md",
+      "prey_project_dark_web_stats_md"
+    ]
+  },
+  {
+    "data_type": "gov_id_scan",
+    "listing_type": "retail_lookup",
+    "region": "ANY",
+    "n": 55,
+    "p10": 17.0,
+    "p50": 150.0,
+    "p90": 1700.0,
+    "last_seen": null,
+    "sources": [
+      "privacy_affairs_2022_md",
+      "deepstrike_dark_web_data_pricing_2025_md",
+      "privacy_affairs_2023_md"
+    ]
+  },
+  {
+    "data_type": "medical_record",
+    "listing_type": "retail_lookup",
+    "region": "ANY",
+    "n": 2,
+    "p10": 500.0,
+    "p50": 500.0,
+    "p90": 500.0,
+    "last_seen": null,
+    "sources": [
+      "deepstrike_dark_web_data_pricing_2025_md"
+    ]
+  },
+  {
+    "data_type": "credit_card",
+    "listing_type": "retail_lookup",
+    "region": "UK",
+    "n": 4,
+    "p10": 13.0,
+    "p50": 20.0,
+    "p90": 20.0,
+    "last_seen": null,
+    "sources": [
+      "privacy_affairs_2022_md",
+      "deepstrike_dark_web_data_pricing_2025_md",
+      "privacy_affairs_2023_md"
+    ]
+  },
+  {
+    "data_type": "credit_card",
+    "listing_type": "retail_lookup",
+    "region": "EU (Germany)",
+    "n": 1,
+    "p10": 10.0,
+    "p50": 10.0,
+    "p90": 10.0,
+    "last_seen": null,
+    "sources": [
+      "deepstrike_dark_web_data_pricing_2025_md"
+    ]
+  },
+  {
+    "data_type": "credit_card",
+    "listing_type": "retail_lookup",
+    "region": "Australia",
+    "n": 6,
+    "p10": 15.0,
+    "p50": 20.0,
+    "p90": 26.5,
+    "last_seen": null,
+    "sources": [
+      "privacy_affairs_2022_md",
+      "deepstrike_dark_web_data_pricing_2025_md",
+      "privacy_affairs_2023_md"
+    ]
+  },
+  {
+    "data_type": "bank_login",
+    "listing_type": "retail_lookup",
+    "region": "US",
+    "n": 5,
+    "p10": 44.0,
+    "p50": 200.0,
+    "p90": 800.0,
+    "last_seen": null,
+    "sources": [
+      "deepstrike_dark_web_data_pricing_2025_md",
+      "privacy_affairs_2023_md"
+    ]
+  },
+  {
+    "data_type": "gov_id_scan",
+    "listing_type": "retail_lookup",
+    "region": "US",
+    "n": 3,
+    "p10": 76.0,
+    "p50": 100.0,
+    "p90": 140.0,
+    "last_seen": null,
+    "sources": [
+      "deepstrike_dark_web_data_pricing_2025_md",
+      "privacy_affairs_2023_md"
+    ]
+  },
+  {
+    "data_type": "medical_record",
+    "listing_type": "retail_lookup",
+    "region": "US",
+    "n": 1,
+    "p10": 500.0,
+    "p50": 500.0,
+    "p90": 500.0,
+    "last_seen": null,
+    "sources": [
+      "deepstrike_dark_web_data_pricing_2025_md"
+    ]
+  },
+  {
+    "data_type": "corporate_access",
+    "listing_type": "account_access",
+    "region": "US",
+    "n": 2,
+    "p10": 570.0,
+    "p50": 1650.0,
+    "p90": 2730.0,
+    "last_seen": null,
+    "sources": [
+      "deepstrike_dark_web_data_pricing_2025_md"
+    ]
+  },
+  {
+    "data_type": "fullz",
+    "listing_type": "bulk_dump",
+    "region": "ANY",
+    "n": 1,
+    "p10": 20.0,
+    "p50": 20.0,
+    "p90": 20.0,
+    "last_seen": null,
+    "sources": [
+      "deepstrike_dark_web_data_pricing_2025_md"
+    ]
+  },
+  {
     "data_type": "pii_core",
     "listing_type": "retail_lookup",
     "region": "US",
@@ -23,61 +193,6 @@
     "p90": 200.0,
     "last_seen": null,
     "sources": [
-      "purplesec_ransomware_costs_md"
-    ]
-  },
-  {
-    "data_type": "other",
-    "listing_type": "retail_lookup",
-    "region": "ANY",
-    "n": 7,
-    "p10": 25.0,
-    "p50": 200.0,
-    "p90": 10450.00000000001,
-    "last_seen": null,
-    "sources": [
-      "privacy_affairs_2023_md",
-      "purplesec_ransomware_costs_md"
-    ]
-  },
-  {
-    "data_type": "gov_id_scan",
-    "listing_type": "bulk_dump",
-    "region": "Saudi Arabia",
-    "n": 1,
-    "p10": 50000000.0,
-    "p50": 50000000.0,
-    "p90": 50000000.0,
-    "last_seen": null,
-    "sources": [
-      "purplesec_ransomware_costs_md"
-    ]
-  },
-  {
-    "data_type": "credit_card",
-    "listing_type": "bulk_dump",
-    "region": "ANY",
-    "n": 3,
-    "p10": 88.0,
-    "p50": 120.0,
-    "p90": 400024.0,
-    "last_seen": null,
-    "sources": [
-      "privacy_affairs_2022_md",
-      "purplesec_ransomware_costs_md"
-    ]
-  },
-  {
-    "data_type": "bank_login",
-    "listing_type": "retail_lookup",
-    "region": "US",
-    "n": 4,
-    "p10": 38.0,
-    "p50": 290.0,
-    "p90": 52650.000000000015,
-    "last_seen": null,
-    "sources": [
-      "privacy_affairs_2023_md",
       "purplesec_ransomware_costs_md"
     ]
   },
@@ -95,7 +210,20 @@
     ]
   },
   {
-    "data_type": "medical_record",
+    "data_type": "other",
+    "listing_type": "retail_lookup",
+    "region": "ANY",
+    "n": 1,
+    "p10": 24.0,
+    "p50": 24.0,
+    "p90": 24.0,
+    "last_seen": null,
+    "sources": [
+      "purplesec_ransomware_costs_md"
+    ]
+  },
+  {
+    "data_type": "fullz",
     "listing_type": "retail_lookup",
     "region": "black market",
     "n": 1,
@@ -108,39 +236,183 @@
     ]
   },
   {
-    "data_type": "credit_card",
-    "listing_type": "retail_lookup",
+    "data_type": "fullz",
+    "listing_type": "account_access",
     "region": "ANY",
-    "n": 37,
-    "p10": 14.600000000000001,
-    "p50": 23.0,
+    "n": 1,
+    "p10": 250.0,
+    "p50": 250.0,
+    "p90": 250.0,
+    "last_seen": null,
+    "sources": [
+      "wired_chinese_hackers_md"
+    ]
+  },
+  {
+    "data_type": "other",
+    "listing_type": "bulk_dump",
+    "region": "ANY",
+    "n": 33,
+    "p10": 43.00000000000001,
+    "p50": 1100.0,
+    "p90": 3800.0,
+    "last_seen": null,
+    "sources": [
+      "privacy_affairs_2022_md",
+      "privacy_affairs_2023_md",
+      "prey_project_dark_web_stats_md"
+    ]
+  },
+  {
+    "data_type": "credit_card",
+    "listing_type": "bulk_dump",
+    "region": "ANY",
+    "n": 3,
+    "p10": 86.0,
+    "p50": 110.0,
+    "p90": 118.0,
+    "last_seen": null,
+    "sources": [
+      "privacy_affairs_2022_md",
+      "prey_project_dark_web_stats_md"
+    ]
+  },
+  {
+    "data_type": "gov_id_scan",
+    "listing_type": "retail_lookup",
+    "region": "Malta",
+    "n": 1,
+    "p10": 4000.0,
+    "p50": 4000.0,
+    "p90": 4000.0,
+    "last_seen": null,
+    "sources": [
+      "moneyzine_dark_web_stats_md"
+    ]
+  },
+  {
+    "data_type": "other",
+    "listing_type": "retail_lookup",
+    "region": "Unknown",
+    "n": 1,
+    "p10": 4500.0,
+    "p50": 4500.0,
+    "p90": 4500.0,
+    "last_seen": null,
+    "sources": [
+      "moneyzine_dark_web_stats_md"
+    ]
+  },
+  {
+    "data_type": "other",
+    "listing_type": "retail_lookup",
+    "region": "US",
+    "n": 1,
+    "p10": 450.0,
+    "p50": 450.0,
+    "p90": 450.0,
+    "last_seen": null,
+    "sources": [
+      "moneyzine_dark_web_stats_md"
+    ]
+  },
+  {
+    "data_type": "other",
+    "listing_type": "retail_lookup",
+    "region": "US states",
+    "n": 1,
+    "p10": 200.0,
+    "p50": 200.0,
     "p90": 200.0,
     "last_seen": null,
     "sources": [
+      "moneyzine_dark_web_stats_md"
+    ]
+  },
+  {
+    "data_type": "credit_card",
+    "listing_type": "retail_lookup",
+    "region": "unspecified",
+    "n": 2,
+    "p10": 74.0,
+    "p50": 90.0,
+    "p90": 106.0,
+    "last_seen": null,
+    "sources": [
+      "moneyzine_dark_web_stats_md"
+    ]
+  },
+  {
+    "data_type": "bank_login",
+    "listing_type": "retail_lookup",
+    "region": "unspecified",
+    "n": 2,
+    "p10": 61.5,
+    "p50": 67.5,
+    "p90": 73.5,
+    "last_seen": null,
+    "sources": [
+      "moneyzine_dark_web_stats_md"
+    ]
+  },
+  {
+    "data_type": "consumer_account",
+    "listing_type": "retail_lookup",
+    "region": "unspecified",
+    "n": 6,
+    "p10": 77.5,
+    "p50": 735.0,
+    "p90": 2475.0,
+    "last_seen": null,
+    "sources": [
+      "moneyzine_dark_web_stats_md"
+    ]
+  },
+  {
+    "data_type": "other",
+    "listing_type": "retail_lookup",
+    "region": "unspecified",
+    "n": 2,
+    "p10": 84.0,
+    "p50": 380.0,
+    "p90": 676.0,
+    "last_seen": null,
+    "sources": [
+      "moneyzine_dark_web_stats_md"
+    ]
+  },
+  {
+    "data_type": "consumer_account",
+    "listing_type": "account_access",
+    "region": "ANY",
+    "n": 13,
+    "p10": 15.2,
+    "p50": 100.0,
+    "p90": 788.0000000000002,
+    "last_seen": null,
+    "sources": [
       "privacy_affairs_2022_md",
-      "comparitech_dark_web_prices_md",
       "privacy_affairs_2023_md"
     ]
   },
   {
-    "data_type": "fullz",
-    "listing_type": "retail_lookup",
+    "data_type": "bank_login",
+    "listing_type": "account_access",
     "region": "ANY",
-    "n": 85,
-    "p10": 5.4,
-    "p50": 120.0,
-    "p90": 1559.9999999999966,
+    "n": 8,
+    "p10": 28.5,
+    "p50": 37.5,
+    "p90": 61.5,
     "last_seen": null,
     "sources": [
       "privacy_affairs_2022_md",
-      "comparitech_dark_web_prices_md",
       "privacy_affairs_2023_md"
     ]
   },
   {
     "data_type": "credit_card",
     "listing_type": "retail_lookup",
-    "region": "UAE",
+    "region": "AE",
     "n": 1,
     "p10": 35.0,
     "p50": 35.0,
@@ -151,13 +423,145 @@
     ]
   },
   {
-    "data_type": "bank_login",
+    "data_type": "consumer_account",
+    "listing_type": "account_access",
+    "region": "CA",
+    "n": 1,
+    "p10": 30.0,
+    "p50": 30.0,
+    "p90": 30.0,
+    "last_seen": null,
+    "sources": [
+      "privacy_affairs_2023_md"
+    ]
+  },
+  {
+    "data_type": "credit_card",
+    "listing_type": "retail_lookup",
+    "region": "AU",
+    "n": 1,
+    "p10": 23.0,
+    "p50": 23.0,
+    "p90": 23.0,
+    "last_seen": null,
+    "sources": [
+      "privacy_affairs_2023_md"
+    ]
+  },
+  {
+    "data_type": "credit_card",
+    "listing_type": "retail_lookup",
+    "region": "IL",
+    "n": 1,
+    "p10": 20.0,
+    "p50": 20.0,
+    "p90": 20.0,
+    "last_seen": null,
+    "sources": [
+      "privacy_affairs_2023_md"
+    ]
+  },
+  {
+    "data_type": "credit_card",
+    "listing_type": "retail_lookup",
+    "region": "ES",
+    "n": 1,
+    "p10": 20.0,
+    "p50": 20.0,
+    "p90": 20.0,
+    "last_seen": null,
+    "sources": [
+      "privacy_affairs_2023_md"
+    ]
+  },
+  {
+    "data_type": "credit_card",
+    "listing_type": "retail_lookup",
+    "region": "GB",
+    "n": 1,
+    "p10": 20.0,
+    "p50": 20.0,
+    "p90": 20.0,
+    "last_seen": null,
+    "sources": [
+      "privacy_affairs_2023_md"
+    ]
+  },
+  {
+    "data_type": "credit_card",
     "listing_type": "retail_lookup",
     "region": "ANY",
-    "n": 23,
-    "p10": 30.0,
-    "p50": 150.0,
-    "p90": 3800.000000000002,
+    "n": 19,
+    "p10": 10.8,
+    "p50": 20.0,
+    "p90": 176.79999999999998,
+    "last_seen": null,
+    "sources": [
+      "comparitech_dark_web_prices_md",
+      "privacy_affairs_2022_md",
+      "privacy_affairs_2023_md"
+    ]
+  },
+  {
+    "data_type": "bank_login",
+    "listing_type": "account_access",
+    "region": "NL",
+    "n": 1,
+    "p10": 4255.0,
+    "p50": 4255.0,
+    "p90": 4255.0,
+    "last_seen": null,
+    "sources": [
+      "privacy_affairs_2023_md"
+    ]
+  },
+  {
+    "data_type": "bank_login",
+    "listing_type": "account_access",
+    "region": "GB",
+    "n": 2,
+    "p10": 2310.0,
+    "p50": 3150.0,
+    "p90": 3990.0,
+    "last_seen": null,
+    "sources": [
+      "privacy_affairs_2023_md"
+    ]
+  },
+  {
+    "data_type": "bank_login",
+    "listing_type": "account_access",
+    "region": "CH",
+    "n": 1,
+    "p10": 2200.0,
+    "p50": 2200.0,
+    "p90": 2200.0,
+    "last_seen": null,
+    "sources": [
+      "privacy_affairs_2023_md"
+    ]
+  },
+  {
+    "data_type": "bank_login",
+    "listing_type": "account_access",
+    "region": "ES",
+    "n": 1,
+    "p10": 1800.0,
+    "p50": 1800.0,
+    "p90": 1800.0,
+    "last_seen": null,
+    "sources": [
+      "privacy_affairs_2023_md"
+    ]
+  },
+  {
+    "data_type": "bank_login",
+    "listing_type": "account_access",
+    "region": "GB, US",
+    "n": 1,
+    "p10": 1600.0,
+    "p50": 1600.0,
+    "p90": 1600.0,
     "last_seen": null,
     "sources": [
       "privacy_affairs_2023_md"
@@ -165,28 +569,68 @@
   },
   {
     "data_type": "consumer_account",
-    "listing_type": "retail_lookup",
-    "region": "ANY",
-    "n": 9,
-    "p10": 1.0,
-    "p50": 4.0,
-    "p90": 20.0,
+    "listing_type": "account_access",
+    "region": "GB",
+    "n": 1,
+    "p10": 610.0,
+    "p50": 610.0,
+    "p90": 610.0,
     "last_seen": null,
     "sources": [
-      "privacy_affairs_2022_md",
       "privacy_affairs_2023_md"
     ]
   },
   {
-    "data_type": "gov_id_scan",
-    "listing_type": "retail_lookup",
-    "region": "ANY",
-    "n": 28,
-    "p10": 10.0,
-    "p50": 90.0,
-    "p90": 2150.0000000000005,
+    "data_type": "bank_login",
+    "listing_type": "account_access",
+    "region": "US",
+    "n": 9,
+    "p10": 30.0,
+    "p50": 75.0,
+    "p90": 260.00000000000006,
     "last_seen": null,
     "sources": [
+      "privacy_affairs_2023_md"
+    ]
+  },
+  {
+    "data_type": "bank_login",
+    "listing_type": "retail_lookup",
+    "region": "ANY",
+    "n": 14,
+    "p10": 30.0,
+    "p50": 77.5,
+    "p90": 2009.9999999999995,
+    "last_seen": null,
+    "sources": [
+      "privacy_affairs_2023_md"
+    ]
+  },
+  {
+    "data_type": "fullz",
+    "listing_type": "retail_lookup",
+    "region": "ANY",
+    "n": 3,
+    "p10": 3.8,
+    "p50": 15.0,
+    "p90": 27.0,
+    "last_seen": null,
+    "sources": [
+      "comparitech_dark_web_prices_md",
+      "privacy_affairs_2023_md"
+    ]
+  },
+  {
+    "data_type": "consumer_account",
+    "listing_type": "retail_lookup",
+    "region": "ANY",
+    "n": 24,
+    "p10": 3.0,
+    "p50": 5.0,
+    "p90": 40.0,
+    "last_seen": null,
+    "sources": [
+      "privacy_affairs_2022_md",
       "privacy_affairs_2023_md"
     ]
   },
@@ -348,8 +792,8 @@
   },
   {
     "data_type": "consumer_account",
-    "listing_type": "bulk_dump",
-    "region": "USA",
+    "listing_type": "retail_lookup",
+    "region": "US",
     "n": 1,
     "p10": 120.0,
     "p50": 120.0,
@@ -361,7 +805,7 @@
   },
   {
     "data_type": "consumer_account",
-    "listing_type": "bulk_dump",
+    "listing_type": "retail_lookup",
     "region": "New Zealand",
     "n": 1,
     "p10": 110.0,
@@ -374,7 +818,7 @@
   },
   {
     "data_type": "consumer_account",
-    "listing_type": "bulk_dump",
+    "listing_type": "retail_lookup",
     "region": "Canada",
     "n": 1,
     "p10": 100.0,
@@ -382,20 +826,6 @@
     "p90": 100.0,
     "last_seen": null,
     "sources": [
-      "privacy_affairs_2023_md"
-    ]
-  },
-  {
-    "data_type": "other",
-    "listing_type": "bulk_dump",
-    "region": "ANY",
-    "n": 18,
-    "p10": 78.5,
-    "p50": 800.0,
-    "p90": 2470.000000000002,
-    "last_seen": null,
-    "sources": [
-      "privacy_affairs_2022_md",
       "privacy_affairs_2023_md"
     ]
   },
@@ -416,10 +846,10 @@
     "data_type": "credit_card",
     "listing_type": "bulk_dump",
     "region": "Global",
-    "n": 4,
-    "p10": 11.5,
-    "p50": 47.5,
-    "p90": 108.00000000000001,
+    "n": 9,
+    "p10": 16.4,
+    "p50": 23.0,
+    "p90": 88.0,
     "last_seen": null,
     "sources": [
       "privacy_affairs_2022_md",
@@ -442,25 +872,11 @@
   {
     "data_type": "credit_card",
     "listing_type": "retail_lookup",
-    "region": "US",
-    "n": 9,
-    "p10": 9.0,
-    "p50": 20.0,
-    "p90": 26.0,
-    "last_seen": null,
-    "sources": [
-      "comparitech_dark_web_prices_md",
-      "privacy_affairs_2023_md"
-    ]
-  },
-  {
-    "data_type": "credit_card",
-    "listing_type": "retail_lookup",
-    "region": "Australia",
-    "n": 4,
-    "p10": 18.799999999999997,
-    "p50": 23.0,
-    "p90": 27.900000000000002,
+    "region": "Canada",
+    "n": 2,
+    "p10": 19.7,
+    "p50": 26.5,
+    "p90": 33.3,
     "last_seen": null,
     "sources": [
       "privacy_affairs_2022_md",
@@ -470,59 +886,6 @@
   {
     "data_type": "credit_card",
     "listing_type": "retail_lookup",
-    "region": "UK",
-    "n": 2,
-    "p10": 20.0,
-    "p50": 20.0,
-    "p90": 20.0,
-    "last_seen": null,
-    "sources": [
-      "privacy_affairs_2022_md",
-      "privacy_affairs_2023_md"
-    ]
-  },
-  {
-    "data_type": "credit_card",
-    "listing_type": "bulk_dump",
-    "region": "Canada",
-    "n": 1,
-    "p10": 35.0,
-    "p50": 35.0,
-    "p90": 35.0,
-    "last_seen": null,
-    "sources": [
-      "privacy_affairs_2023_md"
-    ]
-  },
-  {
-    "data_type": "bank_login",
-    "listing_type": "account_access",
-    "region": "Canada",
-    "n": 1,
-    "p10": 40.0,
-    "p50": 40.0,
-    "p90": 40.0,
-    "last_seen": null,
-    "sources": [
-      "privacy_affairs_2023_md"
-    ]
-  },
-  {
-    "data_type": "bank_login",
-    "listing_type": "account_access",
-    "region": "US",
-    "n": 2,
-    "p10": 493.0,
-    "p50": 2165.0,
-    "p90": 3837.0,
-    "last_seen": null,
-    "sources": [
-      "privacy_affairs_2023_md"
-    ]
-  },
-  {
-    "data_type": "bank_login",
-    "listing_type": "account_access",
     "region": "UAE",
     "n": 1,
     "p10": 35.0,
@@ -530,20 +893,6 @@
     "p90": 35.0,
     "last_seen": null,
     "sources": [
-      "privacy_affairs_2023_md"
-    ]
-  },
-  {
-    "data_type": "fullz",
-    "listing_type": "retail_lookup",
-    "region": "US",
-    "n": 2,
-    "p10": 8.7,
-    "p50": 11.5,
-    "p90": 14.3,
-    "last_seen": null,
-    "sources": [
-      "comparitech_dark_web_prices_md",
       "privacy_affairs_2023_md"
     ]
   },
@@ -629,26 +978,26 @@
     "data_type": "other",
     "listing_type": "bulk_dump",
     "region": "Unspecified",
-    "n": 4,
-    "p10": 20.5,
-    "p50": 247.5,
-    "p90": 730.0,
+    "n": 5,
+    "p10": 24.0,
+    "p50": 200.0,
+    "p90": 690.0,
     "last_seen": null,
     "sources": [
       "privacy_affairs_2023_md"
     ]
   },
   {
-    "data_type": "bank_login",
-    "listing_type": "account_access",
-    "region": "ANY",
-    "n": 8,
-    "p10": 28.700000000000003,
-    "p50": 45.0,
-    "p90": 54.5,
+    "data_type": "credit_card",
+    "listing_type": "retail_lookup",
+    "region": "unknown",
+    "n": 1,
+    "p10": 90.0,
+    "p50": 90.0,
+    "p90": 90.0,
     "last_seen": null,
     "sources": [
-      "privacy_affairs_2022_md"
+      "privacy_affairs_2023_md"
     ]
   },
   {
@@ -692,32 +1041,6 @@
   },
   {
     "data_type": "credit_card",
-    "listing_type": "retail_lookup",
-    "region": "Canada",
-    "n": 1,
-    "p10": 18.0,
-    "p50": 18.0,
-    "p90": 18.0,
-    "last_seen": null,
-    "sources": [
-      "privacy_affairs_2022_md"
-    ]
-  },
-  {
-    "data_type": "consumer_account",
-    "listing_type": "account_access",
-    "region": "ANY",
-    "n": 4,
-    "p10": 11.2,
-    "p50": 14.5,
-    "p90": 18.5,
-    "last_seen": null,
-    "sources": [
-      "privacy_affairs_2022_md"
-    ]
-  },
-  {
-    "data_type": "credit_card",
     "listing_type": "bulk_dump",
     "region": "US, Canada, Australia",
     "n": 1,
@@ -743,13 +1066,39 @@
     ]
   },
   {
-    "data_type": "gov_id_scan",
+    "data_type": "consumer_account",
     "listing_type": "bulk_dump",
     "region": "Global",
     "n": 1,
-    "p10": 25.0,
-    "p50": 25.0,
-    "p90": 25.0,
+    "p10": 10.0,
+    "p50": 10.0,
+    "p90": 10.0,
+    "last_seen": null,
+    "sources": [
+      "privacy_affairs_2022_md"
+    ]
+  },
+  {
+    "data_type": "consumer_account",
+    "listing_type": "account_access",
+    "region": "US",
+    "n": 2,
+    "p10": 22.5,
+    "p50": 32.5,
+    "p90": 42.5,
+    "last_seen": null,
+    "sources": [
+      "privacy_affairs_2022_md"
+    ]
+  },
+  {
+    "data_type": "consumer_account",
+    "listing_type": "account_access",
+    "region": "UK",
+    "n": 1,
+    "p10": 120.0,
+    "p50": 120.0,
+    "p90": 120.0,
     "last_seen": null,
     "sources": [
       "privacy_affairs_2022_md"
@@ -759,10 +1108,10 @@
     "data_type": "consumer_account",
     "listing_type": "account_access",
     "region": "Global",
-    "n": 4,
-    "p10": 27.5,
-    "p50": 82.5,
-    "p90": 141.0,
+    "n": 1,
+    "p10": 150.0,
+    "p50": 150.0,
+    "p90": 150.0,
     "last_seen": null,
     "sources": [
       "privacy_affairs_2022_md"
@@ -782,19 +1131,6 @@
     ]
   },
   {
-    "data_type": "corporate_access",
-    "listing_type": "account_access",
-    "region": "ANY",
-    "n": 1,
-    "p10": 1000.0,
-    "p50": 1000.0,
-    "p90": 1000.0,
-    "last_seen": null,
-    "sources": [
-      "privacy_affairs_2022_md"
-    ]
-  },
-  {
     "data_type": "fullz",
     "listing_type": "bulk_dump",
     "region": "Romania",
@@ -805,6 +1141,19 @@
     "last_seen": null,
     "sources": [
       "privacy_affairs_2022_md"
+    ]
+  },
+  {
+    "data_type": "other",
+    "listing_type": "bulk_dump",
+    "region": "China",
+    "n": 1,
+    "p10": 200000.0,
+    "p50": 200000.0,
+    "p90": 200000.0,
+    "last_seen": null,
+    "sources": [
+      "guardian_china_data_breach_md"
     ]
   },
   {
