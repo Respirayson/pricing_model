@@ -1,0 +1,96 @@
+{
+  "estimate_id": "93fc28bb-89e3-4167-aabe-fa962a53e424",
+  "query_id": "test-vip-001",
+  "estimated_at": "2025-10-22T23:58:07.392088Z",
+  "model_version": "log-linear-v1.0",
+  "price_point_usd": 151.94,
+  "price_low_usd": 75.97,
+  "price_high_usd": 379.86,
+  "confidence": 0.84,
+  "variable_scores": {
+    "target": {
+      "score": 9.0,
+      "justification": "The target is a corporate executive (CFO) with detailed job info, location, and recent call logs, indicating high-value VIP status and potential access to sensitive corporate communications."
+    },
+    "sensitivity": {
+      "score": 8.5,
+      "justification": "Exposes precise real-time location, recent call logs with timestamps, and contact info, enabling stalking, blackmail, or targeted social engineering attacks."
+    },
+    "completeness": {
+      "score": 8.0,
+      "justification": "Includes name, job title, location, recent call history, and contacts, providing a comprehensive profile for profiling or attack planning."
+    },
+    "freshness": {
+      "score": 9.0,
+      "justification": "Data timestamp is within the same day (2025-10-22), indicating recent activity and high temporal relevance."
+    },
+    "rarity": {
+      "score": 4.0,
+      "justification": "While detailed, this appears to be a targeted location lookup rather than a unique leak; not necessarily exclusive but valuable if obtained."
+    },
+    "exploitability": {
+      "score": 7.0,
+      "justification": "Provides enough info for social engineering, phishing, or spear-phishing; contact details and recent activity enable targeted attacks, but no direct credentials or tokens."
+    },
+    "volume": {
+      "score": 2.0,
+      "justification": "Single record targeting one individual, not mass data."
+    },
+    "packaging": {
+      "score": 9.0,
+      "justification": "Data is well-structured JSON with clear fields, making it easily usable for attack planning or analysis."
+    },
+    "seller_reputation": {
+      "score": 5.0,
+      "justification": "No explicit reputation indicators present; default neutral score applied."
+    },
+    "legal_risk": {
+      "score": 2.0,
+      "justification": "Based on US phone country code and location, high enforcement jurisdictions with significant cybercrime laws, increasing legal risk for the seller and reducing potential profit."
+    }
+  },
+  "anchors_used": [
+    {
+      "source": "SOCRadar 2024",
+      "data_type": "location_query",
+      "region": "US",
+      "price_low_usd": 50,
+      "price_high_usd": 200,
+      "description": "Location query pricing range"
+    }
+  ],
+  "flags": [],
+  "data_type": "location_query",
+  "region": "US",
+  "provenance": {
+    "llm_model": "gpt-4.1-nano",
+    "llm_temperature": 0.1,
+    "regression_coefficients": {
+      "alpha": 3.12,
+      "betas": {
+        "target": 0.048,
+        "sensitivity": 0.039,
+        "completeness": 0.033,
+        "freshness": 0.026,
+        "rarity": 0.031,
+        "exploitability": 0.044,
+        "volume": 0.017,
+        "packaging": 0.013,
+        "seller_reputation": 0.019,
+        "legal_risk": -0.018
+      },
+      "covariance": {
+        "target": 0.002,
+        "sensitivity": 0.0015,
+        "completeness": 0.001,
+        "freshness": 0.0008,
+        "rarity": 0.001,
+        "exploitability": 0.002,
+        "volume": 0.0005,
+        "packaging": 0.0003,
+        "seller_reputation": 0.0006,
+        "legal_risk": 0.0005
+      }
+    }
+  }
+}

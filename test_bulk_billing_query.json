@@ -1,0 +1,17 @@
+{
+  "query_id": "test-bulk-001",
+  "query_type": "billing_summary",
+  "target_phone": "+86-139-xxxx-xxxx",
+  "timestamp": "2024-09-15T10:00:00Z",
+  "payload": {
+    "billing_summary": {
+      "total_charges": 89.50,
+      "currency": "CNY",
+      "billing_period": "2024-09",
+      "data_usage_gb": 12.3,
+      "call_count": 45
+    }
+  }
+}
+
+

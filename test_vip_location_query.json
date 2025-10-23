@@ -1,0 +1,39 @@
+{
+  "query_id": "test-vip-001",
+  "query_type": "location_lookup",
+  "target_phone": "+1-555-0199",
+  "timestamp": "2025-10-22T14:30:00Z",
+  "payload": {
+    "name": "John Doe",
+    "job_title": "CFO, Tech Corp",
+    "account_tier": "corporate_executive",
+    "location": {
+      "lat": 37.7749,
+      "lon": -122.4194,
+      "timestamp": "2025-10-22T14:30:00Z",
+      "accuracy_meters": 50
+    },
+    "call_logs": [
+      {
+        "from": "+1-555-0199",
+        "to": "+1-555-0200",
+        "duration_seconds": 320,
+        "timestamp": "2025-10-22T10:15:00Z",
+        "call_type": "voice"
+      },
+      {
+        "from": "+1-555-0199",
+        "to": "+1-555-0201",
+        "duration_seconds": 145,
+        "timestamp": "2025-10-22T09:30:00Z",
+        "call_type": "voice"
+      }
+    ],
+    "contacts": [
+      {"name": "Alice Smith", "phone": "+1-555-0201"},
+      {"name": "Bob Jones", "phone": "+1-555-0202"}
+    ]
+  }
+}
+
+

@@ -496,5 +496,79 @@ def price_apis(ctx, api_definition_file, api_key, benchmark_file, output, limit)
         raise click.Abort()
 
 
+@cli.command(name="content-estimate")
+@click.argument("api_response_file", type=click.Path(exists=True))
+@click.option("--api-key", envvar="LLM_API_KEY", help="LLM API key")
+@click.option("--output", "-o", type=click.Path(), help="Save result to JSON file")
+@click.option("--model-params", type=click.Path(), help="Path to model parameters JSON")
+@click.pass_context
+def content_estimate_cmd(ctx, api_response_file, api_key, output, model_params):
+    """Estimate price for API query using content-based analysis."""
+    from .estimate.content_pricing_agent import ContentPricingAgent
+    import json
+    
+    config = ctx.obj['config']
+    if api_key:
+        config.llm_api_key = api_key
+    
+    if not config.llm_api_key:
+        click.echo("Error: LLM API key required. Set LLM_API_KEY environment variable or use --api-key")
+        raise click.Abort()
+    
+    try:
+        # Load API response
+        with open(api_response_file, 'r') as f:
+            api_response = json.load(f)
+        
+        # Load model params if provided
+        params = None
+        if model_params:
+            with open(model_params, 'r') as f:
+                params = json.load(f)
+        
+        # Initialize agent
+        click.echo("Initializing content pricing agent...")
+        llm_client = LLMClient(config.llm_api_key, config.llm_model)
+        agent = ContentPricingAgent(llm_client, model_params=params)
+        
+        # Estimate
+        click.echo(f"Analyzing API response from {api_response_file}...")
+        result = agent.estimate_api_query_value(api_response)
+        
+        # Display results
+        click.echo(f"\n{'='*60}")
+        click.echo(f"API Query Valuation (Content-Based)")
+        click.echo(f"{'='*60}")
+        click.echo(f"Estimated Price: ${result.price_point_usd:.2f}")
+        click.echo(f"Price Range: ${result.price_low_usd:.2f} - ${result.price_high_usd:.2f}")
+        click.echo(f"Confidence: {result.confidence:.2f}")
+        click.echo(f"Data Type: {result.data_type}")
+        click.echo(f"Region: {result.region}")
+        
+        click.echo(f"\nVariable Scores:")
+        for var, data in result.variable_scores.items():
+            click.echo(f"  {var:20s}: {data['score']:4.1f}/10 - {data['justification']}")
+        
+        if result.flags:
+            click.echo(f"\nFlags: {', '.join(result.flags)}")
+        
+        if result.anchors_used:
+            click.echo(f"\nAnchors Referenced:")
+            for anchor in result.anchors_used:
+                click.echo(f"  - {anchor['source']}: {anchor['description']}")
+        
+        # Save if requested
+        if output:
+            with open(output, 'w', encoding='utf-8') as f:
+                json.dump(result.model_dump(), f, indent=2)
+            click.echo(f"\n[OK] Saved to {output}")
+        
+    except Exception as e:
+        click.echo(f"Error during content-based estimation: {e}")
+        import traceback
+        traceback.print_exc()
+        raise click.Abort()
+
+
 if __name__ == '__main__':
     cli()

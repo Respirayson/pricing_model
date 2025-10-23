@@ -111,3 +111,32 @@ class EstimationResult(BaseModel):
     modifiers_applied: Dict[str, float] = Field(description="Modifier factors applied")
     components_used: List[DataType] = Field(description="Data types used in estimation")
     confidence: float = Field(description="Confidence in the estimate")
+
+
+class ContentPriceEstimate(BaseModel):
+    """Price estimate for content-based API query valuation."""
+    
+    estimate_id: str = Field(description="Unique identifier for this estimate")
+    query_id: str = Field(description="References input query_id")
+    estimated_at: str = Field(description="ISO 8601 timestamp of estimation")
+    model_version: str = Field(description="Pricing model version", default="log-linear-v1.0")
+    
+    # Price estimate
+    price_point_usd: float = Field(description="Point estimate in USD")
+    price_low_usd: float = Field(description="Lower bound of 95% CI")
+    price_high_usd: float = Field(description="Upper bound of 95% CI")
+    confidence: float = Field(description="Model confidence (0-1)", ge=0.0, le=1.0)
+    
+    # Variable scores (LLM-inferred)
+    variable_scores: Dict[str, Dict[str, Any]] = Field(description="LLM-inferred content variable scores")
+    
+    # Anchors and validation
+    anchors_used: List[Dict[str, Any]] = Field(default_factory=list, description="Market anchors used")
+    flags: List[str] = Field(default_factory=list, description="Warnings/alerts")
+    
+    # Inferred metadata
+    data_type: str = Field(description="Inferred data type")
+    region: str = Field(description="Inferred or provided region")
+    
+    # Provenance
+    provenance: Dict[str, Any] = Field(default_factory=dict, description="Model execution metadata")

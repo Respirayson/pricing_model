@@ -16,6 +16,13 @@ A Python framework for analyzing dark web pricing data and estimating the value 
 - Leverage existing benchmark data for accurate estimates
 - Batch processing for multiple APIs
 
+### Content-Based API Pricing (NEW)
+- **LLM-powered content analysis** of individual API responses
+- Estimates black/gray-market resale value based on actual payload content
+- Scores 10 variables: Target importance, Sensitivity, Completeness, Freshness, etc.
+- Academic-grade model with economic theory foundations (Hedonic pricing, VoI theory)
+- Automatic anchor validation against market reports (SOCRadar, DeepStrike, PrivacyAffairs)
+
 ## Installation
 
 ```bash
@@ -58,6 +65,19 @@ pricing-agent price-apis fake_apis.md --benchmark-file bench.json --limit 3
 
 # 2. Full analysis with output
 pricing-agent price-apis fake_apis.md --benchmark-file bench.json --output results.json
+```
+
+### Content-Based API Pricing (NEW)
+
+```bash
+# 1. Estimate value of individual API query response
+pricing-agent content-estimate test_vip_location_query.json
+
+# 2. Save detailed output with variable scores
+pricing-agent content-estimate test_vip_location_query.json --output result.json
+
+# 3. Use custom model parameters
+pricing-agent content-estimate your_query.json --model-params data/model_params.json
 ```
 
 ## CLI Commands

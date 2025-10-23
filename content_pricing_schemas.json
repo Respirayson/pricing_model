@@ -1,0 +1,564 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Content-Based API Pricing Schemas",
+  "description": "JSON schemas for telecom API content-based pricing model inputs and outputs",
+  "version": "1.0",
+  
+  "definitions": {
+    "APIResponseInput": {
+      "type": "object",
+      "description": "Input schema: telecom API response to be valued",
+      "required": ["query_id", "query_type", "timestamp", "payload"],
+      "properties": {
+        "query_id": {
+          "type": "string",
+          "description": "Unique identifier for this API query (UUID recommended)",
+          "example": "q-a1b2c3d4-5678-90ef-ghij-klmnopqrstuv"
+        },
+        "query_type": {
+          "type": "string",
+          "enum": [
+            "location_lookup",
+            "call_detail",
+            "billing_summary",
+            "account_access",
+            "subscriber_profile",
+            "sim_metadata",
+            "contact_list"
+          ],
+          "description": "Type of telecom API query"
+        },
+        "target_phone": {
+          "type": "string",
+          "description": "Target phone number (E.164 format preferred)",
+          "pattern": "^\\+[1-9]\\d{1,14}$",
+          "example": "+1-555-0199"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the query was executed (ISO 8601)",
+          "example": "2025-10-22T14:30:00Z"
+        },
+        "region": {
+          "type": "string",
+          "description": "Geographic region (ISO 3166-1 alpha-2 country code)",
+          "pattern": "^[A-Z]{2}$",
+          "example": "US"
+        },
+        "payload": {
+          "type": "object",
+          "description": "API response payload (structure varies by query_type)",
+          "properties": {
+            "name": {"type": "string", "description": "Subscriber name"},
+            "job_title": {"type": "string", "description": "Occupation/title (for VIP detection)"},
+            "account_tier": {
+              "type": "string",
+              "enum": ["basic", "standard", "premium", "corporate_executive", "vip"],
+              "description": "Account tier indicator"
+            },
+            "location": {
+              "type": "object",
+              "properties": {
+                "lat": {"type": "number", "minimum": -90, "maximum": 90},
+                "lon": {"type": "number", "minimum": -180, "maximum": 180},
+                "timestamp": {"type": "string", "format": "date-time"},
+                "accuracy_meters": {"type": "number", "minimum": 0}
+              },
+              "required": ["lat", "lon", "timestamp"]
+            },
+            "call_logs": {
+              "type": "array",
+              "description": "Call detail records",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "from": {"type": "string"},
+                  "to": {"type": "string"},
+                  "duration_seconds": {"type": "integer", "minimum": 0},
+                  "timestamp": {"type": "string", "format": "date-time"},
+                  "call_type": {"type": "string", "enum": ["voice", "sms", "data"]}
+                }
+              }
+            },
+            "contacts": {
+              "type": "array",
+              "description": "Contact list",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {"type": "string"},
+                  "phone": {"type": "string"}
+                }
+              }
+            },
+            "billing_summary": {
+              "type": "object",
+              "properties": {
+                "total_charges": {"type": "number", "minimum": 0},
+                "currency": {"type": "string", "pattern": "^[A-Z]{3}$"},
+                "billing_period": {"type": "string"},
+                "data_usage_gb": {"type": "number", "minimum": 0},
+                "call_count": {"type": "integer", "minimum": 0}
+              }
+            },
+            "account_access_token": {
+              "type": "string",
+              "description": "OAuth/session token (high exploitability)",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+            },
+            "sim_iccid": {
+              "type": "string",
+              "description": "SIM card identifier (enables SIM-swap attacks)",
+              "pattern": "^[0-9]{19,20}$"
+            },
+            "account_pin": {
+              "type": "string",
+              "description": "Account PIN/password (high exploitability)"
+            }
+          },
+          "additionalProperties": true
+        }
+      }
+    },
+    
+    "VariableScore": {
+      "type": "object",
+      "description": "LLM-inferred score for one content variable",
+      "required": ["score", "justification"],
+      "properties": {
+        "score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 10,
+          "description": "Numeric score (0-10 scale, decimals allowed)"
+        },
+        "justification": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 500,
+          "description": "One-sentence explanation for the score"
+        }
+      }
+    },
+    
+    "VariableScores": {
+      "type": "object",
+      "description": "All 10 LLM-inferred variable scores",
+      "required": [
+        "target",
+        "sensitivity",
+        "completeness",
+        "freshness",
+        "rarity",
+        "exploitability",
+        "volume",
+        "packaging",
+        "seller_reputation",
+        "legal_risk"
+      ],
+      "properties": {
+        "target": {
+          "$ref": "#/definitions/VariableScore",
+          "description": "Target importance (0=anonymous, 10=VIP/celebrity)"
+        },
+        "sensitivity": {
+          "$ref": "#/definitions/VariableScore",
+          "description": "Data sensitivity (0=billing only, 10=real-time location+content)"
+        },
+        "completeness": {
+          "$ref": "#/definitions/VariableScore",
+          "description": "Record completeness (0=phone only, 10=full profile)"
+        },
+        "freshness": {
+          "$ref": "#/definitions/VariableScore",
+          "description": "Data freshness (0=>1yr old, 10=<24hr)"
+        },
+        "rarity": {
+          "$ref": "#/definitions/VariableScore",
+          "description": "Data exclusivity (0=public bulk, 10=exclusive leak)"
+        },
+        "exploitability": {
+          "$ref": "#/definitions/VariableScore",
+          "description": "Monetization potential (0=stats only, 10=account access token)"
+        },
+        "volume": {
+          "$ref": "#/definitions/VariableScore",
+          "description": "Records per query (0=single, 10=100+)"
+        },
+        "packaging": {
+          "$ref": "#/definitions/VariableScore",
+          "description": "Data format quality (0=corrupted, 10=clean JSON)"
+        },
+        "seller_reputation": {
+          "$ref": "#/definitions/VariableScore",
+          "description": "Seller credibility (0=anonymous, 10=verified escrow)"
+        },
+        "legal_risk": {
+          "$ref": "#/definitions/VariableScore",
+          "description": "Enforcement risk (0=US/EU high risk, 10=low regulation)"
+        }
+      }
+    },
+    
+    "PriceAnchor": {
+      "type": "object",
+      "description": "Market price anchor from empirical reports",
+      "required": ["source", "data_type", "region", "price_range_usd"],
+      "properties": {
+        "source": {
+          "type": "string",
+          "description": "Report source",
+          "example": "SOCRadar 2024"
+        },
+        "data_type": {
+          "type": "string",
+          "description": "Data type taxonomy",
+          "example": "telecom_profile"
+        },
+        "region": {
+          "type": "string",
+          "description": "Geographic region or 'ANY'",
+          "example": "US"
+        },
+        "price_range_usd": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {"type": "number", "minimum": 0},
+          "description": "[low, high] price bounds in USD",
+          "example": [150, 200]
+        },
+        "relevance_score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "How relevant this anchor is to the current query"
+        },
+        "description": {
+          "type": "string",
+          "description": "Anchor description from report",
+          "example": "VIP call detail record, full logs, <7 days old"
+        }
+      }
+    },
+    
+    "ContentPriceEstimate": {
+      "type": "object",
+      "description": "Output schema: price estimate with provenance",
+      "required": [
+        "estimate_id",
+        "query_id",
+        "estimated_at",
+        "model_version",
+        "price_estimate",
+        "variable_scores"
+      ],
+      "properties": {
+        "estimate_id": {
+          "type": "string",
+          "description": "Unique identifier for this estimate (UUID)",
+          "example": "est-f9e8d7c6-5432-10ba-9876-543210fedcba"
+        },
+        "query_id": {
+          "type": "string",
+          "description": "References input query_id"
+        },
+        "estimated_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp of estimation (ISO 8601)"
+        },
+        "model_version": {
+          "type": "string",
+          "description": "Pricing model version",
+          "example": "log-linear-v1.0"
+        },
+        "price_estimate": {
+          "type": "object",
+          "required": ["price_point_usd", "price_low_usd", "price_high_usd", "confidence"],
+          "properties": {
+            "price_point_usd": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Point estimate in USD"
+            },
+            "price_low_usd": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Lower bound of 95% confidence interval"
+            },
+            "price_high_usd": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Upper bound of 95% confidence interval"
+            },
+            "confidence": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1,
+              "description": "Model confidence score (0-1)"
+            }
+          }
+        },
+        "variable_scores": {
+          "$ref": "#/definitions/VariableScores",
+          "description": "LLM-inferred scores for all 10 variables"
+        },
+        "anchors_used": {
+          "type": "array",
+          "items": {"$ref": "#/definitions/PriceAnchor"},
+          "description": "Market anchors used for validation"
+        },
+        "flags": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "no_anchors_found",
+              "clipped_below_anchor",
+              "clipped_above_anchor",
+              "model_discrepancy",
+              "low_confidence",
+              "out_of_distribution"
+            ]
+          },
+          "description": "Warnings/alerts about the estimate"
+        },
+        "data_type": {
+          "type": "string",
+          "description": "Inferred data type from taxonomy",
+          "example": "location_query"
+        },
+        "region": {
+          "type": "string",
+          "description": "Inferred or provided region",
+          "example": "US"
+        },
+        "provenance": {
+          "type": "object",
+          "description": "Model execution metadata",
+          "properties": {
+            "llm_model": {
+              "type": "string",
+              "description": "LLM used for scoring",
+              "example": "gpt-4-1106-preview"
+            },
+            "llm_temperature": {
+              "type": "number",
+              "description": "LLM temperature parameter",
+              "example": 0.2
+            },
+            "regression_coefficients": {
+              "type": "object",
+              "description": "Model coefficients used",
+              "properties": {
+                "alpha": {"type": "number", "description": "Intercept"},
+                "beta_target": {"type": "number"},
+                "beta_sensitivity": {"type": "number"},
+                "beta_completeness": {"type": "number"},
+                "beta_freshness": {"type": "number"},
+                "beta_rarity": {"type": "number"},
+                "beta_exploitability": {"type": "number"},
+                "beta_volume": {"type": "number"},
+                "beta_packaging": {"type": "number"},
+                "beta_seller_reputation": {"type": "number"},
+                "beta_legal_risk": {"type": "number"}
+              }
+            }
+          }
+        }
+      }
+    },
+    
+    "BatchEstimateRequest": {
+      "type": "object",
+      "description": "Request schema for batch pricing of multiple queries",
+      "required": ["queries"],
+      "properties": {
+        "queries": {
+          "type": "array",
+          "items": {"$ref": "#/definitions/APIResponseInput"},
+          "minItems": 1,
+          "maxItems": 100,
+          "description": "Array of API responses to value"
+        },
+        "options": {
+          "type": "object",
+          "properties": {
+            "enable_cross_check": {
+              "type": "boolean",
+              "default": true,
+              "description": "Run multiplicative model cross-check"
+            },
+            "strict_anchoring": {
+              "type": "boolean",
+              "default": false,
+              "description": "Reject estimates without anchors (vs. extrapolate)"
+            },
+            "include_provenance": {
+              "type": "boolean",
+              "default": true,
+              "description": "Include full model provenance in output"
+            }
+          }
+        }
+      }
+    },
+    
+    "BatchEstimateResponse": {
+      "type": "object",
+      "description": "Response schema for batch pricing",
+      "required": ["estimates", "summary"],
+      "properties": {
+        "estimates": {
+          "type": "array",
+          "items": {"$ref": "#/definitions/ContentPriceEstimate"},
+          "description": "Array of price estimates (same order as input)"
+        },
+        "summary": {
+          "type": "object",
+          "properties": {
+            "total_queries": {"type": "integer", "minimum": 0},
+            "successful_estimates": {"type": "integer", "minimum": 0},
+            "failed_estimates": {"type": "integer", "minimum": 0},
+            "average_confidence": {"type": "number", "minimum": 0, "maximum": 1},
+            "total_value_usd": {"type": "number", "minimum": 0},
+            "processing_time_seconds": {"type": "number", "minimum": 0}
+          }
+        }
+      }
+    }
+  },
+  
+  "examples": {
+    "vip_location_query_input": {
+      "query_id": "q-12345",
+      "query_type": "location_lookup",
+      "target_phone": "+1-555-0199",
+      "timestamp": "2025-10-22T14:30:00Z",
+      "region": "US",
+      "payload": {
+        "name": "John Doe",
+        "job_title": "CFO, Tech Corp",
+        "account_tier": "corporate_executive",
+        "location": {
+          "lat": 37.7749,
+          "lon": -122.4194,
+          "timestamp": "2025-10-22T14:30:00Z",
+          "accuracy_meters": 50
+        },
+        "call_logs": [
+          {
+            "from": "+1-555-0199",
+            "to": "+1-555-0200",
+            "duration_seconds": 320,
+            "timestamp": "2025-10-22T10:15:00Z",
+            "call_type": "voice"
+          }
+        ],
+        "contacts": [
+          {"name": "Alice Smith", "phone": "+1-555-0201"},
+          {"name": "Bob Jones", "phone": "+1-555-0202"}
+        ]
+      }
+    },
+    
+    "vip_location_query_output": {
+      "estimate_id": "est-f9e8d7c6-5432-10ba-9876-543210fedcba",
+      "query_id": "q-12345",
+      "estimated_at": "2025-10-22T14:35:00Z",
+      "model_version": "log-linear-v1.0",
+      "price_estimate": {
+        "price_point_usd": 193.0,
+        "price_low_usd": 150.0,
+        "price_high_usd": 248.0,
+        "confidence": 0.78
+      },
+      "variable_scores": {
+        "target": {"score": 9.0, "justification": "CFO at major tech company indicates high-value target"},
+        "sensitivity": {"score": 10.0, "justification": "Real-time location with call history is highly sensitive"},
+        "completeness": {"score": 8.5, "justification": "Name, location, calls, contacts present; missing billing"},
+        "freshness": {"score": 10.0, "justification": "Timestamp less than 1 hour old"},
+        "rarity": {"score": 7.0, "justification": "Corporate executive profile, not publicly available"},
+        "exploitability": {"score": 8.0, "justification": "Location enables physical surveillance; calls enable social engineering"},
+        "volume": {"score": 2.0, "justification": "Single target with rich dataset"},
+        "packaging": {"score": 9.0, "justification": "Clean structured JSON format"},
+        "seller_reputation": {"score": 6.0, "justification": "Neutral (no explicit reputation indicators in payload)"},
+        "legal_risk": {"score": 2.0, "justification": "US target with aggressive cybercrime enforcement"}
+      },
+      "anchors_used": [
+        {
+          "source": "SOCRadar 2024",
+          "data_type": "location_query",
+          "region": "US",
+          "price_range_usd": [150, 200],
+          "relevance_score": 0.92,
+          "description": "VIP target location query, real-time, with call history"
+        }
+      ],
+      "flags": [],
+      "data_type": "location_query",
+      "region": "US",
+      "provenance": {
+        "llm_model": "gpt-4-1106-preview",
+        "llm_temperature": 0.2,
+        "regression_coefficients": {
+          "alpha": 3.12,
+          "beta_target": 0.048,
+          "beta_sensitivity": 0.039,
+          "beta_completeness": 0.033,
+          "beta_freshness": 0.026,
+          "beta_rarity": 0.031,
+          "beta_exploitability": 0.044,
+          "beta_volume": 0.017,
+          "beta_packaging": 0.013,
+          "beta_seller_reputation": 0.019,
+          "beta_legal_risk": -0.018
+        }
+      }
+    },
+    
+    "bulk_billing_query_input": {
+      "query_id": "q-67890",
+      "query_type": "billing_summary",
+      "target_phone": "+86-139-xxxx-xxxx",
+      "timestamp": "2025-10-22T10:00:00Z",
+      "region": "CN",
+      "payload": {
+        "billing_summary": {
+          "total_charges": 89.50,
+          "currency": "CNY",
+          "billing_period": "2024-09",
+          "data_usage_gb": 12.3,
+          "call_count": 45
+        }
+      }
+    },
+    
+    "account_access_token_input": {
+      "query_id": "q-11111",
+      "query_type": "account_access",
+      "target_phone": "+1-212-555-0123",
+      "timestamp": "2025-10-22T12:00:00Z",
+      "region": "US",
+      "payload": {
+        "name": "Jane Smith",
+        "account_id": "TM-9483721",
+        "account_access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0",
+        "account_pin": "8374",
+        "sim_iccid": "8901410321123456789"
+      }
+    }
+  },
+  
+  "notes": {
+    "implementation": "These schemas define the contract between the pricing estimator and consuming applications. Implementations should validate inputs against APIResponseInput and ensure outputs conform to ContentPriceEstimate.",
+    "versioning": "Schema version tracks model version. Breaking changes require version bump.",
+    "extensibility": "The 'payload' field is intentionally flexible (additionalProperties: true) to accommodate diverse API response structures. Parsers should handle missing/unexpected fields gracefully.",
+    "privacy": "Production implementations should hash or anonymize PII in audit logs. The query_id should not contain identifiable information.",
+    "testing": "Use the provided examples as test fixtures. Validate that your implementation produces estimates within ±20% of documented examples."
+  }
+}
+
+
