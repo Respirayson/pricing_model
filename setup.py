@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Setup configuration for the pricing agent package."""
 
 from setuptools import setup, find_packages

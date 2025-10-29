@@ -140,3 +140,56 @@ class ContentPriceEstimate(BaseModel):
     
     # Provenance
     provenance: Dict[str, Any] = Field(default_factory=dict, description="Model execution metadata")
+
+
+class VoIPriceEstimate(BaseModel):
+    """
+    Bayesian Value-of-Information price estimate.
+    
+    Based on Bergemann, Bonatti & Smolin (2018), "The Design and Price of Information",
+    American Economic Review 108(1): 1-48.
+    """
+    
+    estimate_id: str = Field(description="Unique identifier for this estimate")
+    query_id: str = Field(description="References input query_id")
+    estimated_at: str = Field(description="ISO 8601 timestamp of estimation")
+    model_version: str = Field(description="VoI model version", default="voi-bergemann-v1.0")
+    
+    # Core VoI results
+    V_ex_ante: float = Field(description="Value of information in utility units", ge=0.0)
+    USD_estimate: float = Field(description="Normalized USD price estimate", ge=0.0)
+    price_low_usd: float = Field(description="Lower bound of 95% CI", ge=0.0)
+    price_high_usd: float = Field(description="Upper bound of 95% CI", ge=0.0)
+    confidence: float = Field(description="Model confidence (0-1)", ge=0.0, le=1.0)
+    
+    # Posterior parameters (action-conditional)
+    posteriors: Dict[str, Dict[str, float]] = Field(
+        description="Posterior parameters for each attacker action (P_success, R_expected, C_cost, detection_risk)"
+    )
+    
+    # Decision analysis
+    optimal_action_prior: str = Field(description="Optimal action without information signal")
+    optimal_action_posterior: str = Field(description="Optimal action with information signal")
+    
+    # Supporting data
+    anchors_used: List[Dict[str, Any]] = Field(
+        default_factory=list, 
+        description="Market anchor prices used for USD normalization"
+    )
+    simulation_stats: Dict[str, Any] = Field(
+        default_factory=dict,
+        description="Monte Carlo simulation statistics"
+    )
+    flags: List[str] = Field(default_factory=list, description="Warnings/alerts")
+    
+    # Metadata
+    data_type: str = Field(description="Data type classification")
+    region: str = Field(description="Geographic region")
+    freshness_days: float = Field(description="Data age in days", ge=0.0)
+    freshness_factor: float = Field(description="Exponential freshness decay factor", ge=0.0, le=1.0)
+    
+    # Provenance
+    provenance: Dict[str, Any] = Field(
+        default_factory=dict,
+        description="Model execution metadata and theoretical references"
+    )

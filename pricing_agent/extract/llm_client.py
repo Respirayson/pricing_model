@@ -1,5 +1,3 @@
-"""LLM client for structured data extraction."""
-
 import json
 import os
 import sys
@@ -25,12 +23,10 @@ class LLMClient:
         # Initialize GPTInvoker if API key is available
         if self.api_key:
             try:
-                # Import your GPTInvoker - try multiple paths
                 current_dir = os.path.dirname(os.path.abspath(__file__))
                 project_root = os.path.dirname(os.path.dirname(os.path.dirname(current_dir)))
                 sys.path.insert(0, project_root)
                 
-                # Also try the current working directory
                 cwd = os.getcwd()
                 if cwd not in sys.path:
                     sys.path.insert(0, cwd)
@@ -41,7 +37,9 @@ class LLMClient:
                     api_key=self.api_key,
                     api_host="https://yunwu.ai/v1",
                     temperature=0.1,
-                    max_tokens=12000
+                    max_tokens=12000,
+                    write_to_cache=False,
+                    read_from_cache=False,
                 )
                 print(f"Initialized GPTInvoker with model {model}")
             except ImportError:

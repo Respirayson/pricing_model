@@ -1,0 +1,298 @@
+[
+  {
+    "test_case": "Basic Consumer Profile",
+    "result": {
+      "query_id": "sim_001",
+      "estimated_at": "2025-10-30T04:17:03.528931Z",
+      "model_version": "voi-bergemann-v1.0",
+      "V_ex_ante": 157.5500449896857,
+      "USD_estimate": 20.148226907334802,
+      "confidence": 0.857112045797209,
+      "ex_post_params": {
+        "P_success": {
+          "do_nothing": 1.0,
+          "guess_address": 0.5,
+          "phish_email": 0.45,
+          "resell_bulk": 0.9
+        },
+        "R_expected": {
+          "do_nothing": 0.0,
+          "guess_address": 175.0,
+          "phish_email": 1100.0,
+          "resell_bulk": 250.0
+        },
+        "C_cost": {
+          "do_nothing": 0.0,
+          "guess_address": 15.0,
+          "phish_email": 80.0,
+          "resell_bulk": 30.0
+        },
+        "detection_risk": {
+          "do_nothing": 0.0,
+          "guess_address": 0.06,
+          "phish_email": 0.25,
+          "resell_bulk": 0.125
+        }
+      },
+      "optimal_action_ex_ante": "guess_address",
+      "optimal_action_ex_post": "phish_email",
+      "anchors_used": [
+        {
+          "data_type": "telecom_profile",
+          "price": 50.0,
+          "estimated_voi": 400.0,
+          "source": "privacy_affairs_2023"
+        },
+        {
+          "data_type": "telecom_profile",
+          "price": 85.0,
+          "estimated_voi": 650.0,
+          "source": "comparitech_2024"
+        }
+      ],
+      "simulation_stats": {
+        "n_simulations": 1000,
+        "ex_ante_mean": 185.7983346207416,
+        "ex_ante_std": 8.526512829121202e-14,
+        "ex_post_mean": 378.23039411940255,
+        "ex_post_std": 67.53601083940161,
+        "V_raw": 192.43205949866095,
+        "action_distribution": {
+          "do_nothing": 0.0,
+          "guess_address": 0.014,
+          "phish_email": 0.678,
+          "resell_bulk": 0.308
+        }
+      },
+      "flags": [],
+      "data_type": "telecom_profile",
+      "region": "US",
+      "freshness_days": 2.0,
+      "freshness_factor": 0.8187307530779818,
+      "provenance": {
+        "n_simulations": 1000,
+        "risk_aversion": 0.5,
+        "detection_penalty": -1000.0
+      }
+    }
+  },
+  {
+    "test_case": "VIP Executive Profile with Tracking",
+    "result": {
+      "query_id": "sim_002",
+      "estimated_at": "2025-10-30T04:17:07.954503Z",
+      "model_version": "voi-bergemann-v1.0",
+      "V_ex_ante": 226.81504053286892,
+      "USD_estimate": 29.00615422199189,
+      "confidence": 0.8874861403842338,
+      "ex_post_params": {
+        "P_success": {
+          "do_nothing": 1.0,
+          "guess_address": 0.6,
+          "phish_email": 0.5,
+          "resell_bulk": 0.9
+        },
+        "R_expected": {
+          "do_nothing": 0.0,
+          "guess_address": 175.0,
+          "phish_email": 1100.0,
+          "resell_bulk": 250.0
+        },
+        "C_cost": {
+          "do_nothing": 0.0,
+          "guess_address": 15.0,
+          "phish_email": 80.0,
+          "resell_bulk": 30.0
+        },
+        "detection_risk": {
+          "do_nothing": 0.0,
+          "guess_address": 0.05,
+          "phish_email": 0.25,
+          "resell_bulk": 0.1
+        }
+      },
+      "optimal_action_ex_ante": "guess_address",
+      "optimal_action_ex_post": "phish_email",
+      "anchors_used": [
+        {
+          "data_type": "telecom_profile",
+          "price": 50.0,
+          "estimated_voi": 400.0,
+          "source": "privacy_affairs_2023"
+        },
+        {
+          "data_type": "telecom_profile",
+          "price": 85.0,
+          "estimated_voi": 650.0,
+          "source": "comparitech_2024"
+        }
+      ],
+      "simulation_stats": {
+        "n_simulations": 1000,
+        "ex_ante_mean": 185.7983346207416,
+        "ex_ante_std": 8.526512829121202e-14,
+        "ex_post_mean": 413.06745916732865,
+        "ex_post_std": 76.5595068877786,
+        "V_raw": 227.26912454658705,
+        "action_distribution": {
+          "do_nothing": 0.0,
+          "guess_address": 0.021,
+          "phish_email": 0.694,
+          "resell_bulk": 0.285
+        }
+      },
+      "flags": [],
+      "data_type": "telecom_profile",
+      "region": "US",
+      "freshness_days": 0.02,
+      "freshness_factor": 0.9980019986673331,
+      "provenance": {
+        "n_simulations": 1000,
+        "risk_aversion": 0.5,
+        "detection_penalty": -1000.0
+      }
+    }
+  },
+  {
+    "test_case": "Minimal API Response",
+    "result": {
+      "query_id": "sim_003",
+      "estimated_at": "2025-10-30T04:17:11.471230Z",
+      "model_version": "voi-bergemann-v1.0",
+      "V_ex_ante": 190.18844849538866,
+      "USD_estimate": 23.773556061923582,
+      "confidence": 0.5,
+      "ex_post_params": {
+        "P_success": {
+          "do_nothing": 1.0,
+          "guess_address": 0.5,
+          "phish_email": 0.45,
+          "resell_bulk": 0.9
+        },
+        "R_expected": {
+          "do_nothing": 0.0,
+          "guess_address": 175.0,
+          "phish_email": 1100.0,
+          "resell_bulk": 250.0
+        },
+        "C_cost": {
+          "do_nothing": 0.0,
+          "guess_address": 15.0,
+          "phish_email": 85.0,
+          "resell_bulk": 30.0
+        },
+        "detection_risk": {
+          "do_nothing": 0.0,
+          "guess_address": 0.06,
+          "phish_email": 0.25,
+          "resell_bulk": 0.125
+        }
+      },
+      "optimal_action_ex_ante": "guess_address",
+      "optimal_action_ex_post": "phish_email",
+      "anchors_used": [
+        {
+          "data_type": "telecom_subscription",
+          "price": 25.0,
+          "estimated_voi": 200.0,
+          "source": "socradar_2024"
+        }
+      ],
+      "simulation_stats": {
+        "n_simulations": 1000,
+        "ex_ante_mean": 185.7983346207416,
+        "ex_ante_std": 8.526512829121202e-14,
+        "ex_post_mean": 375.98678311613025,
+        "ex_post_std": 71.86745729076677,
+        "V_raw": 190.18844849538866,
+        "action_distribution": {
+          "do_nothing": 0.0,
+          "guess_address": 0.015,
+          "phish_email": 0.643,
+          "resell_bulk": 0.342
+        }
+      },
+      "flags": [],
+      "data_type": "telecom_subscription",
+      "region": "US",
+      "freshness_days": 0.0,
+      "freshness_factor": 1.0,
+      "provenance": {
+        "n_simulations": 1000,
+        "risk_aversion": 0.5,
+        "detection_penalty": -1000.0
+      }
+    }
+  },
+  {
+    "test_case": "Bulk Dataset (50 records)",
+    "result": {
+      "query_id": "sim_004",
+      "estimated_at": "2025-10-30T04:17:14.594773Z",
+      "model_version": "voi-bergemann-v1.0",
+      "V_ex_ante": 126.70845021682574,
+      "USD_estimate": 15.838556277103217,
+      "confidence": 0.5,
+      "ex_post_params": {
+        "P_success": {
+          "do_nothing": 1.0,
+          "guess_address": 0.5,
+          "phish_email": 0.45,
+          "resell_bulk": 0.9
+        },
+        "R_expected": {
+          "do_nothing": 0.0,
+          "guess_address": 175.0,
+          "phish_email": 1100.0,
+          "resell_bulk": 250.0
+        },
+        "C_cost": {
+          "do_nothing": 0.0,
+          "guess_address": 15.0,
+          "phish_email": 80.0,
+          "resell_bulk": 20.0
+        },
+        "detection_risk": {
+          "do_nothing": 0.0,
+          "guess_address": 0.06,
+          "phish_email": 0.25,
+          "resell_bulk": 0.1
+        }
+      },
+      "optimal_action_ex_ante": "guess_address",
+      "optimal_action_ex_post": "phish_email",
+      "anchors_used": [
+        {
+          "data_type": "telecom_subscription",
+          "price": 25.0,
+          "estimated_voi": 200.0,
+          "source": "socradar_2024"
+        }
+      ],
+      "simulation_stats": {
+        "n_simulations": 1000,
+        "ex_ante_mean": 185.7983346207416,
+        "ex_ante_std": 8.526512829121202e-14,
+        "ex_post_mean": 394.70525167067046,
+        "ex_post_std": 64.15620205975573,
+        "V_raw": 208.90691704992886,
+        "action_distribution": {
+          "do_nothing": 0.0,
+          "guess_address": 0.007,
+          "phish_email": 0.527,
+          "resell_bulk": 0.466
+        }
+      },
+      "flags": [],
+      "data_type": "telecom_subscription",
+      "region": "US",
+      "freshness_days": 5.0,
+      "freshness_factor": 0.6065306597126334,
+      "provenance": {
+        "n_simulations": 1000,
+        "risk_aversion": 0.5,
+        "detection_penalty": -1000.0
+      }
+    }
+  }
+]
